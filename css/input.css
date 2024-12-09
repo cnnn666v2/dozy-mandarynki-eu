@@ -10,4 +10,13 @@
     footer {
         @apply mt-auto border-t-4 p-8 border-gray-500 flex flex-row;
     }
+
+    h1 { @apply text-3xl; }
+    h2 { @apply text-2xl; }
+    h3 { @apply text-xl;  }
+    h4 { @apply text-lg;  }
+    h5 { @apply text-base }
+    h6 { @apply text-sm;  }
+
+    p { @apply text-lg }
 }
