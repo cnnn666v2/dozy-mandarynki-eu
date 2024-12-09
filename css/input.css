@@ -8,7 +8,7 @@
     }
 
     footer {
-        @apply mt-auto border-t-4 p-8 border-gray-500 flex flex-row;
+        @apply mt-auto border-t-4 p-8 border-gray-500 flex flex-col justify-center;
     }
 
     h1 { @apply text-3xl; }
