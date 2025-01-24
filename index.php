@@ -55,7 +55,7 @@
                 <hr class="border-2 border-gray-500 w-full">
 
                 <h1 class="my-3 text-center uppercase font-bold">So... who are you? 🤔</h1>
-                <section id="about-me" class="flex flex-col p-2">
+                <section id="about-me" class="flex flex-col px-4 py-2">
                     <div class="flex flex-row gap-4">
                         <div class="flex flex-col flex-1 border-2 border-blue-600 rounded-xl p-2">
                             <h1 class="uppercase italic text-center">A teenager 🙋‍♂️</h1>
