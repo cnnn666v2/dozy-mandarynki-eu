@@ -114,6 +114,12 @@
                     <a class="border-2 text-white border-red-600 p-3 text-xl font-bold rounded-lg uppercase hover:border-red-700 hover:bg-slate-800 transition-colors ease-in-out duration-200" href="#">MORE PROJECTS</a>
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
+
+                <h1 class="mt-8 text-center uppercase font-bold">You've reached the end! 🏁</h1>
+                <p class="text-center">Maybe try one of the link below?</p>
+                <section id="projects-fav" class="flex items-center justify-center px-4 py-2 gap-5">
+                    <p class="text-lg">-- <a href="https://madnarynki.eu">madnarynki.eu</a> · <a href="#">discord server</a> · <a href="#">about me</a> · <a href="#">funny cat video</a> --</p>
+                </section>
             </div>
         </div>
 
