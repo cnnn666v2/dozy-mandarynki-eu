@@ -54,10 +54,10 @@
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
 
-                <h1 class="my-3 text-center uppercase font-bold">So... who are you? 🤔</h1>
+                <h1 class="mb-3 mt-8 text-center uppercase font-bold">So... who are you? 🤔</h1>
                 <section id="about-me" class="flex flex-col px-4 py-2">
                     <div class="flex flex-row gap-4">
-                        <div class="flex flex-col flex-1 border-2 border-blue-600 rounded-xl p-2">
+                        <div class="flex flex-col flex-1 bg-slate-900 border-4 border-blue-600 rounded-xl p-3">
                             <h1 class="uppercase italic text-center">A teenager 🙋‍♂️</h1>
                             <p class="mt-1">I'm just your ordinary, 17 years old, Polish teenager. My hobbies include:
                                 <br>- airsoft, games, editing videos, <br>- programming, cycling <br>- and something else probably<br><br>
@@ -65,7 +65,7 @@
                             <p class="mt-auto">If you want to know more personal things about me you can check them <a href="#">here</a></p>
                         </div>
 
-                        <div class="flex flex-col flex-1 border-2 border-green-600 rounded-xl p-2">
+                        <div class="flex flex-col flex-1 bg-emerald-950 border-4 border-green-600 rounded-xl p-3">
                             <h1 class="uppercase italic text-center">An aspiring programmer 👨‍💻</h1>
                             <p class="mt-1">I like messing with Unity, and making games with it, but the game industry won't be my carrer path.
                                 <br><br>
@@ -76,7 +76,7 @@
                             </p>
                         </div>
 
-                        <div class="flex flex-col flex-1 border-2 border-yellow-600 rounded-xl p-2">
+                        <div class="flex flex-col flex-1 bg-orange-950 border-4 border-yellow-600 rounded-xl p-3">
                             <h1 class="uppercase italic text-center">A human 👽</h1>
                             <p class="mt-1">Yeah I'm just a human. Totally.
                             </p>
@@ -85,6 +85,33 @@
 
                     <h2 class="mt-3">TLDR?</h2>
                     <p>Well, just a regular <i>human</i> teen who's into programming, gaming, airsoft and a bit more</p>
+                </section>
+                <hr class="border-2 border-gray-500 w-full">
+            
+                <h1 class="mb-3 mt-8 text-center uppercase font-bold">My projects ⚒</h1>
+                <section id="projects-fav" class="flex flex-col items-center justify-center px-4 py-2 gap-5">
+                    <div class="flex flex-row gap-5 flex-1 px-8">
+                        <div class="flex flex-row border-4 rounded-xl border-blue-600 p-4 flex-1 gap-2">
+                            <img src="/img/jajco.png" class="rounded-xl w-[150px] h-[150px] aspect-square">
+                            <div class="ml-2 flex flex-col">
+                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">Roman Clicker (?)</h2>
+                                <p class="my-2 text-gray-300">This is one of my favourite projects of all time! The first version of that game, was a simple clicker with some <i>really</i> boring combat system and very little content.
+                                    <br>The new version of the game completely gets rid of the clicker mechanic (this is why I'm considering changing the name) and a better, turn-based combat system with skill trees, abilities, attack types, and more!</p>
+                                <p class="mt-auto text-gray-300">The game is free and open-source, it's source is available under <a href="#">this github link</a>. And if you want to learn more about the game, you can do so <a href="#">here</a>.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row border-4 rounded-xl border-orange-600 p-4 flex-1 gap-2">
+                            <img src="/img/astolfo.webp" class="rounded-xl w-[150px] h-[150px] aspect-square">
+                            <div class="ml-2 flex flex-col">
+                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">cnnn666.madnarynki.eu</h2>
+                                <p class="my-2 text-gray-300">Yes, this project is the current website you're viewing. There isn't much to say about it, except the fact that it's a personal website. I will try to most (if not all) features, on this website, write by myself.</p>
+                                <p class="!mt-auto text-gray-300 text-right">Just like the <a href="#">Roman Clicker</a> project, this one is open-source. You can view the source code <a href="#">here</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a class="border-2 text-white border-red-600 p-3 text-xl font-bold rounded-lg uppercase hover:border-red-700 hover:bg-slate-800 transition-colors ease-in-out duration-200" href="#">MORE PROJECTS</a>
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
             </div>
