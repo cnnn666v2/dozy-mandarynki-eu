@@ -122,5 +122,6 @@
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
 
         <script src="/js/hide-sidebar.js"></script>
+        <script src="/js/random-content-end.js"></script>
     </body>
 </html>
