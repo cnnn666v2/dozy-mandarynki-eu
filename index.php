@@ -15,10 +15,10 @@
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/navbar.html'; ?>
         </header>
 
-        <div id="container" class="flex flex-row">
+        <div id="container" class="flex flex-row relative">
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/sidebar.html'; ?>
 
-            <div class="flex flex-col basis-5/6">
+            <div class="flex flex-col justify-center items-center w-max">
                 <h1 class="font-bold text-center mt-5">Welcome to my website, traveller! 👋</h1>
                 <p class="text-center">Bring a coffee, or a can of beer, because you'll be in for a <i>looooooong</i> time 😉</p>
 
@@ -27,7 +27,7 @@
                     <div class="flex flex-row gap-5">
                         <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
                             <div class="flex flex-row">
-                                <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px !important;height: 150px !important;">
+                                <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px; height: 150px;">
                                 <div class="ml-2">
                                     <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the absolute latest blog</h2>
                                     <p class="my-2 text-gray-300">And this is the description of the absolute latest blog</p>
@@ -39,7 +39,7 @@
 
                         <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
                             <div class="flex flex-row">
-                                <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px !important;height: 150px !important;">
+                                <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px; height: 150px;">
                                 <div class="ml-2">
                                     <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the (almost) absolute latest blog</h2>
                                     <p class="my-2 text-gray-300">And this is the description of the (almost) absolute latest blog</p>
@@ -83,8 +83,8 @@
                         </div>
                     </div>
 
-                    <h2 class="mt-3">TLDR?</h2>
-                    <p>Well, just a regular <i>human</i> teen who's into programming, gaming, airsoft and a bit more</p>
+                    <h2 class="mt-3 text-center">TLDR?</h2>
+                    <p class="text-center">Well, just a regular <i>human</i> teen who's into programming, gaming, airsoft and a bit more</p>
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
             
@@ -115,14 +115,12 @@
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
 
-                <h1 class="mt-8 text-center uppercase font-bold">You've reached the end! 🏁</h1>
-                <p class="text-center">Maybe try one of the link below?</p>
-                <section id="projects-fav" class="flex items-center justify-center px-4 py-2 gap-5">
-                    <p class="text-lg">-- <a href="https://madnarynki.eu">madnarynki.eu</a> · <a href="#">discord server</a> · <a href="#">about me</a> · <a href="#">funny cat video</a> --</p>
-                </section>
+                <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/content-end.html'; ?>
             </div>
         </div>
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
+
+        <script src="/js/hide-sidebar.js"></script>
     </body>
 </html>
