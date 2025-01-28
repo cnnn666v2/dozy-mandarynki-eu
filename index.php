@@ -41,14 +41,14 @@
                                         <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 4</span>
                                         <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">more...</span>
                                     </p>
-                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Pubslihed on: 28.01.2025</p>
+                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Published on: 28.01.2025</p>
                                 </div>
                                 <div class="ml-2">
                                     <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the absolute latest blog</h2>
                                     <p class="my-2 text-gray-300">And this is the description of the absolute latest blog</p>
                                 </div>
                             </div>
-                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-900 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
+                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
                             <a href="#" class="absolute top-0 left-0 w-full h-full"></a>
                         </article>
 
@@ -64,14 +64,14 @@
                                         <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 4</span>
                                         <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">more...</span>
                                     </p>
-                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Pubslihed on: 28.01.2025</p>
+                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Published on: 28.01.2025</p>
                                 </div>
                                 <div class="ml-2">
                                     <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the (almost) absolute latest blog</h2>
                                     <p class="my-2 text-gray-300">And this is the (almost) description of the absolute latest blog</p>
                                 </div>
                             </div>
-                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-900 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
+                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
                             <a href="#" class="absolute top-0 left-0 w-full h-full"></a>
                         </article>
                     </div>
