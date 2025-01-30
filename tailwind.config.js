@@ -3,7 +3,8 @@ module.exports = {
   content: ["*.{html,php}",
     "config/html/*.{html,php}", 
     "projects/*.php",
-    "projects/*/*.php"],
+    "projects/*/*.php",
+    "panel/*.php"],
   theme: {
     extend: {},
   },
