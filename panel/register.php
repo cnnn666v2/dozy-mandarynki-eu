@@ -3,23 +3,53 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
 
-    if($_SERVER['REQUEST_METHOD'] == "POST") {
-        if(isset($_POST['login']) && isset($_POST['password']) && isset($_POST['password-confirm'])) {
-            $error_msg = "";
+    if(isset($_SESSION['user'])) {
+        header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
+        exit();
+    }
 
-            $login = $_POST['login'];
-            $pass = $_POST['password'];
-            $pass_conf = $_POST['password-confirm'];
-
-            if($login != "" && $pass != "" && $pass_conf != "") {
-                echo "Success";
-
-                exit();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if($mode_registration) {
+            if (isset($_POST['login'], $_POST['display-name'], $_POST['password'], $_POST['password-confirm'])) {
+                $login = trim($_POST['login']);
+                $display_name = trim($_POST['display-name']);
+                $password = $_POST['password'];
+                $password_confirm = $_POST['password-confirm'];
+        
+                if ($login === "" || $display_name === "" || $password === "" || $password_confirm === "") {
+                    $error_msg = "Error: All fields are required!";
+                } elseif ($password !== $password_confirm) {
+                    $error_msg = "Error: Passwords do not match!";
+                } else {
+                    try {
+                        $table_users = $dbprefix . "users";
+    
+                        $stmt = $pdo->prepare("SELECT id FROM `$table_users` WHERE login = ?");
+                        $stmt->execute([$login]);
+                        
+                        if ($stmt->fetch()) {
+                            $error_msg = "Error: Username already taken!";
+                        } else {
+                            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+                            
+                            $stmt = $pdo->prepare("INSERT INTO " . $dbprefix . "users (login, display_name, password) VALUES (?, ?, ?)");
+                            if ($stmt->execute([$login, $display_name, $hashed_password])) {
+                                $_SESSION['user'] = $login;
+                                $_SESSION['user_id'] = $user['id'];
+                                $_SESSION['username'] = $user['display_name'];
+                                header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
+                                exit();
+                            } else {
+                                $error_msg = "Error: Registration failed. Please try again.";
+                            }
+                        }
+                    } catch (PDOException $e) {
+                        $error_msg = "Error: Database error: " . $e->getMessage();
+                    }
+                }
             } else {
-                $error_msg = "Error occured: Login or Password not set!";
+                $error_msg = "Error: Invalid form submission.";
             }
-        } else {
-            $error_msg = "Error occured when processing form, please try again.";
         }
     }
 ?>
@@ -56,16 +86,16 @@
                     <div class="flex flex-row gap-4">
                         <div class="flex flex-col w-1/2">
                             <label for="login" class="text-xl font-bold">Login:</label>
-                            <input type="text" name="login" placeholder="eg. XSecretSantaX" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
+                            <input type="text" name="login" placeholder="eg. XSecretSantaX" class="rounded-lg p-2 bg-slate-700 mb-6" />
 
                             <label for="display-name" class="text-xl font-bold">Display name:</label>
-                            <input type="text" name="display-name" placeholder="eg. Jajco" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
+                            <input type="text" name="display-name" placeholder="eg. Jajco" class="rounded-lg p-2 bg-slate-700 mb-6" />
         
                             <label for="password" class="text-xl font-bold">Password:</label>
-                            <input type="password" name="password" placeholder="eg. *******" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
+                            <input type="password" name="password" placeholder="eg. *******" class="rounded-lg p-2 bg-slate-700 mb-6" />
         
                             <label for="password-confirm" class="text-xl font-bold">Confirm password:</label>
-                            <input type="password" name="password-confirm" placeholder="same as above *******" class="rounded-lg p-2 bg-slate-700 mb-2" required/>
+                            <input type="password" name="password-confirm" placeholder="same as above *******" class="rounded-lg p-2 bg-slate-700 mb-2" />
                         </div>
 
                         <div class="flex flex-col items-center w-1/2">

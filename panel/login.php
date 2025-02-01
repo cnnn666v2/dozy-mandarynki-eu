@@ -3,21 +3,27 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
 
+    if(isset($_SESSION['user'])) {
+        header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
+        exit();
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
             $login = trim($_POST['login']);
             $pass = $_POST['password'];
     
-            $table_users = $dbprefix . "_users";
+            $table_users = $dbprefix . "users";
     
             $stmt = $pdo->prepare("SELECT id, login, password, display_name FROM `$table_users` WHERE login = :login");
             $stmt->execute(['login' => $login]);
             $user = $stmt->fetch();
     
             if ($user && password_verify($pass, $user['password'])) {
+                $_SESSION['user'] = $login;
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['display_name'];
-                header('Location: /panel/index.php');
+                header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
                 exit;
             } else {
                 $error_msg = "Error: Invalid username or password!";
