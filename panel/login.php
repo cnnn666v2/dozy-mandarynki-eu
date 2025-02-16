@@ -55,10 +55,6 @@
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/sidebar.html'; ?>
 
             <div class="flex flex-col  items-center w-full">
-                <?php 
-                if($mode_registration == true) {
-                ?>
-
                 <h1 class="font-bold text-center mt-5">Hey there! 👋</h1>
                 <p class="text-center">Please login to continue. </p>
                 
@@ -70,6 +66,8 @@
         
                             <label for="password" class="text-xl font-bold">Password:</label>
                             <input type="password" name="password" placeholder="eg. *******" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
+
+                            <p class="text-left mb-1 text-base"><a href="/panel/register.php">Register</a> <?php if($service_emailrecovery) { echo '· <a href="#">Forgot password?</a>'; } ?></p>
                         </div>
 
                         <div class="flex flex-col items-center w-1/2">
@@ -80,10 +78,6 @@
                     </div>
                     <button type="submit" class="rounded-lg p-2 border-2 border-green-600 hover:bg-green-600 uppercase transition-colors ease-in-out duration-200">Login</button>
                 </form>
-
-                <?php
-                }
-                ?>
                 
                 <hr class="border-2 border-gray-500 w-full">
 

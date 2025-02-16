@@ -29,73 +29,147 @@
         <div id="container" class="flex flex-row relative">
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/sidebar.html'; ?>
 
-            <div class="flex flex-col justify-center items-center w-max">
-                <nav id="nav-subtop" class="border-b-4 border-gray-500 w-full">
-                    <ul class="mx-1 py-4 flex flex-row text-xl uppercase font-bold">
-                        <li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="#">Dashboard</a></li>
-                        <li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="#">New Blog</a></li>
-                        <li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="#">New Category</a></li>
-                        <li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="#">New Tag</a></li>
-                        <li class="ml-auto"><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="#">Settings</a></li>
-                        <li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="/panel/logout.php">Logout</a></li>
+            <div class="flex flex-col items-center w-full">
+                <nav id="nav-subtop" class="w-full">
+                    <ul class="flex flex-row mx-2 py-4 text-xl uppercase font-bold pb-3">
+                        <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#">Dashboard</a></li>
+                        <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#" id="subnav-blogs">Blogs</a></li>
+                        <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#" id="subnav-categories">Categories</a></li>
+                        <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#" id="subnav-tags">Tags</a></li>
+                        <li class="px-2 py-3 ml-auto"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#">Settings</a></li>
+                        <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#">Account</a></li>
+                        <!--<li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="/panel/logout.php">Logout</a></li>-->
+                        <span class="bg-green-600"></span>
                     </ul>
-                </nav>
 
-                <h1 class="font-bold text-center mt-5 uppercase">Welcome back, <span class="text-green-500"><?php echo $_SESSION['username'] ?></span> 👋</h1>
-                <p class="text-center">Have a great day!</p>
-            
-                <h1 class="mb-3 mt-8 text-center uppercase font-bold">My game projects</h1>
-                <section id="games" class="flex flex-col items-center justify-center px-4 py-2 gap-5">
-                    <div class="flex flex-row gap-5 flex-1 px-8">
-                        <div class="flex flex-row border-4 rounded-xl border-blue-600 p-4 flex-1 gap-2">
-                            <img src="/img/astolfo.webp" class="rounded-xl w-[150px] h-[150px] aspect-square">
-                            <div class="ml-2 flex flex-col w-full">
-                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">CubeTest</h2>
-                                <p class="my-2 text-gray-300">This was my first game ever made in Unity. I've made it by following a tutorial series from Brackeys. Additionally, the game features skins for the cube which can be bought with an in-game currency.
-                                    <br>Currently, the game is not being worked on anymore, but I do want to revisit it in the future.
-                                </p>
-                                <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg hover:bg-green-700 mt-auto uppercase w-max self-end transition-colors ease-in-out duration-200">Read more</button>
+                    <div id="panel-dropdown" class="p-4 border-y-4 border-gray-500 bg-slate-900">
+                        <h1 class="font-bold text-center uppercase">Welcome back, <span class="text-green-500"><?php echo $_SESSION['username'] ?></span> 👋</h1>
+                        <p class="text-center">Have a great day!</p>
+
+                        <div id="dropdown-blogs" class="flex flex-row w-full h-full hidden">
+                            <div class="flex flex-col basis-1/2 gap-3">
+                                <h1 class="uppercase">Blogs</h1>
+                                <div class="flex flex-row gap-2">
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Blog +</a>
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Blogs</a>
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">Your Blogs</a>
+                                </div>
+
+                                <p>Random blog: <a href="#">[ TITLE ]</a></p>
+                            </div>
+
+                            <div class="flex flex-col basis-1/2 text-right mt-auto  ">
+                                <p class="uppercase text-xl font-bold">Total blogs: 256</p>
+                                <p class="uppercase text-xl font-bold">Total users: 10</p>
+                                <a href="#" class="ml-auto mt-1 p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase font-bold text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">User list</a>
                             </div>
                         </div>
 
-                        <div class="flex flex-row border-4 rounded-xl border-blue-600 p-4 flex-1 gap-2">
-                            <img src="/img/jajco.png" class="rounded-xl w-[150px] h-[150px] aspect-square">
-                            <div class="ml-2 flex flex-col w-full">
-                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">Roman Clicker (?)</h2>
-                                <p class="my-2 text-gray-300">This is one of my favourite projects of all time! The first version of that game, was a simple clicker with some <i>really</i> boring combat system and very little content.
-                                    <br>The new version of the game completely gets rid of the clicker mechanic (this is why I'm considering changing the name) and a better, turn-based combat system with skill trees, abilities, attack types, and more!</p>
-                                <p class="mt-auto mb-2 text-gray-300">Game is not currently worked on, but a lot of the features are finished.</p>
-                                <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg hover:bg-green-700 mt-auto uppercase w-max self-end transition-colors ease-in-out duration-200">Read more</button>
+                        <div id="dropdown-categories" class="flex flex-row w-full h-full hidden">
+                            <div class="flex flex-col basis-1/2 gap-3">
+                                <h1 class="uppercase">Categories</h1>
+                                <div class="flex flex-row gap-2">
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Category +</a>
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Categories</a>
+                                </div>
+
+                                <p class="uppercase font-bold">Pinned categories:
+                                    <span class="bg-red-700 rounded-lg px-2 py-1">youtube</span>
+                                    <span class="bg-green-700 rounded-lg px-2 py-1">life</span>
+                                    <span class="bg-blue-700 rounded-lg px-2 py-1">news</span>
+                                    <span class="bg-orange-700 rounded-lg px-2 py-1">tutorial</span>
+                                    <a href="">[ Change ]</a>
+                                </p>
+
+                                <p class="uppercase font-bold">Total categories: 25</p>
+                            </div>
+                        </div>
+
+                        <div id="dropdown-tags" class="flex flex-row w-full h-full hidden">
+                            <div class="flex flex-col basis-1/2 gap-3">
+                                <h1 class="uppercase">Tags</h1>
+                                <div class="flex flex-row gap-2">
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Tag +</a>
+                                    <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Tags</a>
+                                </div>
+
+                                <p class="uppercase font-bold">Pinned tags:
+                                    <span class="bg-red-700 rounded-lg px-2 py-1">showcase</span>
+                                    <span class="bg-green-700 rounded-lg px-2 py-1">photos</span>
+                                    <span class="bg-blue-700 rounded-lg px-2 py-1">videos</span>
+                                    <span class="bg-orange-700 rounded-lg px-2 py-1">games</span>
+                                    <a href="">[ Change ]</a>
+                                </p>
+
+                                <p class="uppercase font-bold">Total tags: 25</p>
                             </div>
                         </div>
                     </div>
+                </nav>
 
-                    <div class="flex flex-row gap-5 flex-1 px-8 justify-center">
-                        <div class="flex flex-row border-4 rounded-xl border-blue-600 p-4 flex-1 gap-2">
-                            <img src="/img/astolfo.webp" class="rounded-xl w-[150px] h-[150px] aspect-square">
-                            <div class="ml-2 flex flex-col w-full">
-                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">Buckshot Roulette - Web Edition</h2>
-                                <p class="my-2 text-gray-300">This is a replication of <a href="#">Buckshot Roulette</a> but in vanilla JavaScript.</p>
-                                <p class="mt-auto mb-2 text-gray-300">Game is not currently worked on, and is not complete.</p>
-                                <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg hover:bg-green-700 mt-auto uppercase w-max self-end transition-colors ease-in-out duration-200">Read more</button>
+                <section id="dashboard" class="flex flex-row justify-center px-4 py-2 gap-2 w-full">
+                    <div class="flex flex-col gap-3 items-start w-1/3">
+                        <h1>Latest blog posts:</h1>
+                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
+                            <div class="flex flex-col">
+                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
+                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
+                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
                             </div>
+
+                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
                         </div>
 
-                        <div class="flex flex-row border-4 rounded-xl border-blue-600 p-4 flex-1 gap-2">
-                            <img src="/img/astolfo.webp" class="rounded-xl w-[150px] h-[150px] aspect-square">
-                            <div class="ml-2 flex flex-col w-full">
-                                <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">Codename: Blitz</h2>
-                                <p class="my-2 text-gray-300">This is yet another game project. I do not actively work on it, but sometimes I do.
-                                    <br>Project is currently in the early stages, with barebones idea of what it's supposed to be.
-                                </p>
-                                <p class="mt-auto mb-2 text-gray-300">Both, the game and the source-code, are not available to the public yet.</p>
-                                <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg hover:bg-green-700 mt-auto uppercase w-max self-end transition-colors ease-in-out duration-200">Read more</button>
+                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
+                            <div class="flex flex-col">
+                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
+                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
+                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
                             </div>
+
+                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
+                        </div>
+
+                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
+                            <div class="flex flex-col">
+                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
+                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
+                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
+                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
+                            </div>
+
+                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-5 items-end w-2/3">
+                        <div class="flex flex-col items-end gap-3 w-1/2 bg-slate-900 rounded-xl p-4 mb-8 mt-4 border-2 border-blue-500">
+                            <h1>In a hurry?</h1>
+                            <form class="flex flex-col w-full gap-3">
+                                <input type="text" name="title" placeholder="Blog title..." class="rounded-lg p-2 bg-slate-700" required/>
+                                <textarea class="min-h-28 rounded-lg bg-slate-700 p-2" placeholder="Blog description..." required>Treat this more as a short status rather than a blog, it'll count towards blogs tho</textarea>
+                                
+                                <div class="flex flex-row gap-2">
+                                    <label for="category" class="p-2 text-lg font-bold">Category: </label>
+
+                                    <select name="category" class="rounded-lg p-2 bg-slate-700" required>
+                                        <option value="volvo">Status (recommended)</option>
+                                        <option value="saab">YouTube</option>
+                                        <option value="mercedes">News</option>
+                                        <option value="audi">Tutorial</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="rounded-lg p-2 border-2 border-green-600 hover:bg-green-600 uppercase font-bold transition-colors ease-in-out duration-200">Publish</button>
+                            </form>
                         </div>
                     </div>
                 </section>
-                <hr class="my-8 border-2 border-gray-500 w-full">
-
                 
                 <hr class="mt-8 border-2 border-gray-500 w-full">
 
@@ -104,5 +178,7 @@
         </div>
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
+
+        <script src="/js/panel-nav.js" defer></script>
     </body>
 </html>
