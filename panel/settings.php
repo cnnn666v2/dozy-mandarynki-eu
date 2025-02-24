@@ -38,7 +38,6 @@
                         <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="#" id="subnav-tags">Tags</a></li>
                         <li class="px-2 py-3 ml-auto"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="/panel/settings.php">Settings</a></li>
                         <li class="px-2 py-3"><a class="px-2 py-3 text-white hover:text-white border-2 rounded-lg border-green-600 hover:bg-green-600 transition-colors ease-in-out duration-200" href="/panel/account.php">Account</a></li>
-                        <!--<li><a class="p-4 text-white hover:text-white  hover:border-cyan-500 hover:bg-slate-600" href="/panel/logout.php">Logout</a></li>-->
                         <span class="bg-green-600"></span>
                     </ul>
 
@@ -107,71 +106,51 @@
                     </div>
                 </nav>
 
-                <section id="dashboard" class="flex flex-row justify-center px-4 py-2 gap-2 w-full">
-                    <div class="flex flex-col gap-3 items-start w-1/3">
-                        <h1>Latest blog posts:</h1>
-                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
-                            <div class="flex flex-col">
-                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
-                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
-                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
+                <section id="dashboard" class="flex flex-col items-center px-4 py-2 gap-2 w-full">
+                    <form class="flex flex-col w-full gap-4">
+                    <h1 class="uppercase font-bold text-center">Website Settings</h1>
+
+                    <div class="flex flex-row items-start w-full gap-4">
+                        <div class="flex flex-col items-start border-2 border-blue-600 p-4 w-1/3 rounded-lg">
+                            <h1 class="uppercase font-bold text-center w-full">Modes</h1>
+                            <div class="flex flex-row gap-2">
+                                <label for="maintenance">Maintenance mode:</label>
+                                <input type="checkbox" name="maintenance" />
                             </div>
 
-                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
+                            <div class="flex flex-row gap-2">
+                                <label for="registration">Registration:</label>
+                                <input type="checkbox" name="registration" />
+                            </div>
                         </div>
 
-                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
-                            <div class="flex flex-col">
-                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
-                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
-                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
+                        <div class="flex flex-col items-start border-2 border-blue-600 p-4 w-1/3 rounded-lg">
+                            <h1 class="uppercase font-bold text-center w-full">Services</h1>
+                            <div class="flex flex-row gap-2">
+                                <label for="recovery">Email recovery (N/A):</label>
+                                <input type="checkbox" name="recovery" disabled />
                             </div>
-
-                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
                         </div>
 
-                        <div class="flex flex-row bg-slate-900 border-2 border-blue-600 w-full p-2 rounded-lg text-lg">
-                            <div class="flex flex-col">
-                                <a class="uppercase" href="#">ULTRA SUPER LONG TITLE of a blog post GG but it should be even longer</a>
-                                <p class="text-base"><span class="font-semibold uppercase">Category:</span> category <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Tags:</span> tag1, tag2, tag3, more... <a class="font-normal" href="#">[EDIT]</a></p>
-                                <p class="text-base"><span class="font-semibold uppercase">Published on:</span> 5th December 2025</p>
-                                <p class="text-base"><span class="font-semibold uppercase">Author:</span> Cnnn666</p>
+                        <div class="flex flex-col items-start border-2 border-blue-600 p-4 w-1/3 rounded-lg">
+                            <h1 class="uppercase font-bold text-center w-full">Other</h1>
+                            <div class="flex flex-row gap-2">
+                                <label for="maintenance">Setting 1:</label>
+                                <input type="checkbox" name="maintenance" />
                             </div>
 
-                            <img src="/img/jajco.png" class="w-[75px] h-[75px] rounded-lg ml-auto border-2 border-red-600"/>
+                            <div class="flex flex-row gap-2">
+                                <label for="registration">Setting 2:</label>
+                                <input type="checkbox" name="registration" />
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-5 items-end w-2/3">
-                        <div class="flex flex-col items-end gap-3 w-1/2 bg-slate-900 rounded-xl p-4 mb-8 mt-4 border-2 border-blue-500">
-                            <h1>In a hurry?</h1>
-                            <form class="flex flex-col w-full gap-3">
-                                <input type="text" name="title" placeholder="Blog title..." class="rounded-lg p-2 bg-slate-700" required/>
-                                <textarea class="min-h-28 rounded-lg bg-slate-700 p-2" placeholder="Blog description..." required>Treat this more as a short status rather than a blog, it'll count towards blogs tho</textarea>
-                                
-                                <div class="flex flex-row gap-2">
-                                    <label for="category" class="p-2 text-lg font-bold">Category: </label>
-
-                                    <select name="category" class="rounded-lg p-2 bg-slate-700" required>
-                                        <option value="volvo">Status (recommended)</option>
-                                        <option value="saab">YouTube</option>
-                                        <option value="mercedes">News</option>
-                                        <option value="audi">Tutorial</option>
-                                    </select>
-                                </div>
-
-                                <button type="submit" class="rounded-lg p-2 border-2 border-green-600 hover:bg-green-600 uppercase font-bold transition-colors ease-in-out duration-200">Publish</button>
-                            </form>
-                        </div>
-                    </div>
+                    <button type="submit" class="rounded-lg p-2 border-2 border-green-600 hover:bg-green-600 uppercase font-bold transition-colors ease-in-out duration-200">Save</button>
+                    </form>
                 </section>
                 
-                <hr class="mt-8 border-2 border-gray-500 w-full">
+                <hr class="mt-2 border-2 border-gray-500 w-full">
 
                 <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/content-end.html'; ?>
             </div>
