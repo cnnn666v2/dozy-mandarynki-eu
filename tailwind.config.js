@@ -4,7 +4,8 @@ module.exports = {
     "config/html/*.{html,php}", 
     "projects/*.php",
     "projects/*/*.php",
-    "panel/*.php"],
+    "panel/*.php",
+    "panel/blogs/*.php"],
   theme: {
     extend: {},
   },

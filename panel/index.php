@@ -50,8 +50,8 @@
                             <div class="flex flex-col basis-1/2 gap-3">
                                 <h1 class="uppercase">Blogs</h1>
                                 <div class="flex flex-row gap-2">
-                                    <a href="/panel/new-blog.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Blog +</a>
-                                    <a href="/panel/blogs.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Blogs</a>
+                                    <a href="/panel/blogs/new-blog.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Blog +</a>
+                                    <a href="/panel/blogs/blogs.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Blogs</a>
                                     <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">Your Blogs</a>
                                 </div>
 

@@ -7,6 +7,64 @@
         header('Location: http://'.$_SERVER['HTTP_HOST']);
         exit();
     }
+
+    try {
+        $stmt = $pdo->query("SELECT name FROM {$dbprefix}categories");
+        $categories = $stmt->fetchAll();
+        
+        $stmt = $pdo->query("SELECT name FROM {$dbprefix}tags");
+        $tags = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        die("Error: Query failed: " . $e->getMessage());
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $title = trim($_POST['title'] ?? '');
+        $category = trim($_POST['category'] ?? '');
+        $tags = isset($_POST['tags']) ? json_decode($_POST['tags'], true) : [];
+        $content = trim($_POST['content'] ?? '');
+        $author_id = $_SESSION['user_id'];
+
+        if (empty($title) || empty($category) || empty($content)) {
+            die("Error: Title, category, and content are required.");
+        }
+    
+        try {
+            $stmt = $pdo->prepare("SELECT id FROM {$dbprefix}categories WHERE name = ?");
+            $stmt->execute([$category]);
+            $category_row = $stmt->fetch();
+            
+            if (!$category_row) {
+                die("Error: Invalid category.");
+            }
+            $category_id = $category_row['id'];
+
+            $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, description, author_id, category_id) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$title, $content, $author_id, $category_id]);
+
+            $blog_id = $pdo->lastInsertId();
+
+            if (!empty($tags) && is_array($tags)) {
+                foreach ($tags as $tag) {
+                    echo "Tag: {$tag}";
+                    $stmt = $pdo->prepare("SELECT id FROM {$dbprefix}tags WHERE name = ?");
+                    $stmt->execute([$tag]);
+                    $tag_row = $stmt->fetch();
+    
+                    if ($tag_row) {
+                        $tag_id = $tag_row['id'];
+                        $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog_tags (blog_id, tag_id) VALUES (?, ?)");
+                        $stmt->execute([$blog_id, $tag_id]);
+                    }
+                }
+            }
+    
+            header("Location: /panel/index.php");
+            exit();
+        } catch (PDOException $e) {
+            die("Database error: " . $e->getMessage());
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +108,7 @@
                             <div class="flex flex-col basis-1/2 gap-3">
                                 <h1 class="uppercase">Blogs</h1>
                                 <div class="flex flex-row gap-2">
-                                    <a href="/panel/new-blog.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Blog +</a>
+                                    <a href="/panel/blogs/new-blog.php" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">New Blog +</a>
                                     <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">All Blogs</a>
                                     <a href="#" class="p-2 border-2 border-cyan-600 rounded-lg text-xl uppercase text-white hover:text-white hover:bg-cyan-600 w-max transition-colors ease-in-out duration-200">Your Blogs</a>
                                 </div>
@@ -108,7 +166,7 @@
                 </nav>
 
                 <section id="dashboard" class="flex flex-row justify-center px-4 py-2 gap-2 w-full">
-                    <form method="POST" action="/panel/new-blog.php" class="bg-slate-900 rounded-xl p-4 flex flex-col w-full gap-3 mb-8 mt-4 border-2 border-blue-500">
+                    <form method="POST" action="/panel/blogs/new-blog.php" class="bg-slate-900 rounded-xl p-4 flex flex-col w-full gap-3 mb-8 mt-4 border-2 border-blue-500">
                         <div class="flex flex-col w-full gap-2">
                             <label for="title" class="text-xl font-bold">Blog title:</label>
                             <input type="text" name="title" placeholder="eg. I've adopted a cat! :3" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
@@ -116,10 +174,12 @@
                             <div class="flex flex-row gap-2">
                                 <div class="flex flex-col w-1/3 gap-2">
                                     <label for="category" class="text-xl font-bold">Blog category:</label>
-                                    <select name="category" class="rounded-lg p-2 bg-slate-700">
-                                        <option value="status">Status</option>
-                                        <option value="news">News</option>
-                                        <option value="tutorial">Tutorial</option>
+                                    <select name="category" class="rounded-lg p-2 bg-slate-700 uppercase">
+                                        <?php foreach ($categories as $category): ?>
+                                            <option value="<?= htmlspecialchars($category['name']) ?>">
+                                                <?= htmlspecialchars($category['name']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
 
                                     <p id="tag-err-msg" class="text-red-600 my-auto"></p>
@@ -128,26 +188,49 @@
                                 <div class="flex flex-col w-2/3 gap-2">
                                     <label for="tags" class="text-xl font-bold">Blog tags:</label>
                                     <div class="flex flex-row gap-2">
-                                        <select id="tags-list" name="tags" class="rounded-lg p-2 bg-slate-700 w-1/4 uppercase">
-                                            <option value="status">Status</option>
-                                            <option value="news">News</option>
-                                            <option value="tutorial">Tutorial</option>
+                                        <select id="tags-list" class="rounded-lg p-2 bg-slate-700 w-1/4 uppercase">
+                                            <?php foreach ($tags as $tag): ?>
+                                                <option value="<?= htmlspecialchars($tag['name']) ?>">
+                                                    <?= htmlspecialchars($tag['name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
                                         </select>
-                                        <button id="add-tag" class="rounded-lg px-2 border-2 border-cyan-600 hover:bg-cyan-600 uppercase transition-colors ease-in-out duration-200">Add tag</button>
+                                        <button type="button" id="add-tag" class="rounded-lg px-2 border-2 border-cyan-600 hover:bg-cyan-600 uppercase transition-colors ease-in-out duration-200">Add tag</button>
                                     </div>
                                     <div id="tag-table" class="flex flex-row gap-2 border-2 border-slate-500 w-full rounded-lg bg-slate-700 p-2 uppercase font-bold flex-wrap">
                                         <p id="dummy-tag" class="group bg-blue-600 rounded-md px-2 hover:bg-blue-400 hover:cursor-pointer hover:text-red-700 transition-colors ease-in-out duration-200 hidden">Dummy tag</p>
                                     </div>
+
+                                    <input type="hidden" name="tags" id="tags-hidden">
                                 </div>
                             </div>
 
                             <div class="flex flex-col border-2 border-cyan-500 rounded-md w-full">
-                                <div class="flex flex-row bg-slate-950 w-full gap-1 px-2 rounded-t-md">
-                                    <button class="bg-green-700 p-2">[a]</button>
-                                    <button class="bg-green-700 p-2">[b]</button>
-                                    <button class="bg-green-700 p-2">[u]</button>
+                                <div class="flex flex-row bg-slate-950 w-full gap-8 px-2 py-1 rounded-t-md">
+                                    <div>
+                                        <button type="button" class="blog-btn" onclick="insertElement('BOLD')">[b]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('ITALIC')">[i]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('UNDERLINE')">[u]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('STRIKETHROUGH')">[s]</button>
+                                    </div>
+
+                                    <div>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HYPERLINK')">[a]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('QUOTE')">[q]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('SPOILER')">[sp]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('IMAGE')">[img]</button>
+                                    </div>
+
+                                    <div>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER1')">[h1]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER2')">[h2]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER3')">[h3]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER4')">[h4]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER5')">[h5]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER6')">[h6]</button>
+                                    </div>
                                 </div>
-                                <textarea class="bg-slate-700 p-2 min-h-60 w-full rounded-b-md" placeholder="So today I have adopted a cat!"></textarea>
+                                <textarea name="content" class="bg-slate-700 p-2 min-h-60 w-full rounded-b-md" placeholder="[h1]So today I have adopted a cat![/h1]" id="typing-post"></textarea>
                             </div>
                         </div>
                         <button type="submit" class="rounded-lg p-2 border-2 border-green-600 hover:bg-green-600 uppercase transition-colors ease-in-out duration-200">Publish blog</button>
@@ -164,5 +247,6 @@
 
         <script src="/js/panel-nav.js" defer></script>
         <script src="/js/blogs/tags.js" defer></script>
+        <script src="/js/blogs/blog-maker.js" defer></script>
     </body>
 </html>

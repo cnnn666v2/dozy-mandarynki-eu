@@ -1,13 +1,17 @@
 let btnAdd = document.getElementById("add-tag");
 let selTag = document.getElementById("tags-list");
 let tagList = document.getElementById("tag-table");
+let tagList2 = document.getElementById("tags-hidden");
 let errorTagMsg = document.getElementById("tag-err-msg");
+let addedTags = [];
 
 btnAdd.addEventListener("click", tagAdd);
 
 function tagDel(event) {
     console.log("Jajco xd");
-    event.target.remove();    
+    event.target.remove();
+    addedTags = addedTags.filter(item => item !== selTag.value);
+    tagList2.value = JSON.stringify(addedTags);
 }
 
 function tagAdd() {
@@ -22,5 +26,8 @@ function tagAdd() {
 
         element.addEventListener("click", tagDel);
         tagList.appendChild(element);
+
+        addedTags.push(selTag.value);
+        tagList2.value = JSON.stringify(addedTags);
     }
 }

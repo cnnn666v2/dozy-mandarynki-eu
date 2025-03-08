@@ -20,4 +20,6 @@
 
     p { @apply text-lg }
     a { @apply text-cyan-400 hover:text-cyan-600}
+
+    .blog-btn { @apply text-gray-400 p-2 rounded-md hover:text-white hover:bg-slate-700 transition-colors ease-in-out duration-200 }
 }
