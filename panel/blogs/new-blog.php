@@ -1,7 +1,7 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
+    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
 
     if(!isset($_SESSION['user_id'])) {
         header('Location: http://'.$_SERVER['HTTP_HOST']);
@@ -22,6 +22,7 @@
         $title = trim($_POST['title'] ?? '');
         $category = trim($_POST['category'] ?? '');
         $tags = isset($_POST['tags']) ? json_decode($_POST['tags'], true) : [];
+        $file = $_FILES['file'];
         $content = trim($_POST['content'] ?? '');
         $author_id = $_SESSION['user_id'];
 
@@ -30,6 +31,41 @@
         }
     
         try {
+            $datePath = date("Y") . '/' . date("m") . '/' . date("d") . '/';
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/'. $datePath; //Filepath for server upload
+            $featured_image = null;
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            if (!is_writable($uploadPath)) {
+                die("Error: Upload directory is not writable.");
+            }
+            
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                die("File upload error: " . $file['error']);
+            }
+
+            if (!empty($_FILES['file']['name'])) {
+                $fileName = "FI_" . time() . "_" . basename($file['name']);
+                $targetFile = $uploadPath . $fileName;
+                $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+
+                if (in_array($fileType, $allowedTypes)) {
+                    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+                        $featured_image = $targetFile;
+                    } else {
+                        die("Error: Failed to upload file.");
+                    }
+                } else {
+                    die("Error: Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.");
+                }
+            }
+
+            $uploadPathC = '/uploads/'. $datePath . $fileName; //Filepath to store in db and send to client
+
             $stmt = $pdo->prepare("SELECT id FROM {$dbprefix}categories WHERE name = ?");
             $stmt->execute([$category]);
             $category_row = $stmt->fetch();
@@ -37,10 +73,11 @@
             if (!$category_row) {
                 die("Error: Invalid category.");
             }
+
             $category_id = $category_row['id'];
 
-            $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, description, author_id, category_id) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$title, $content, $author_id, $category_id]);
+            $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, description, author_id, category_id, featured_image) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $content, $author_id, $category_id, $uploadPathC]);
 
             $blog_id = $pdo->lastInsertId();
 
@@ -59,7 +96,7 @@
                 }
             }
     
-            header("Location: /panel/index.php");
+            header("Location: /panel/index.php"); // Change location to newly created blog
             exit();
         } catch (PDOException $e) {
             die("Database error: " . $e->getMessage());
@@ -166,7 +203,7 @@
                 </nav>
 
                 <section id="dashboard" class="flex flex-row justify-center px-4 py-2 gap-2 w-full">
-                    <form method="POST" action="/panel/blogs/new-blog.php" class="bg-slate-900 rounded-xl p-4 flex flex-col w-full gap-3 mb-8 mt-4 border-2 border-blue-500">
+                    <form method="POST" enctype="multipart/form-data" action="/panel/blogs/new-blog.php" class="bg-slate-900 rounded-xl p-4 flex flex-col w-full gap-3 mb-8 mt-4 border-2 border-blue-500">
                         <div class="flex flex-col w-full gap-2">
                             <label for="title" class="text-xl font-bold">Blog title:</label>
                             <input type="text" name="title" placeholder="eg. I've adopted a cat! :3" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
@@ -203,6 +240,11 @@
 
                                     <input type="hidden" name="tags" id="tags-hidden">
                                 </div>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label for="file" class="text-xl font-bold">Featured image:</label>
+                                <input type="file" name="file" accept="image/*" required/>
                             </div>
 
                             <div class="flex flex-col border-2 border-cyan-500 rounded-md w-full">

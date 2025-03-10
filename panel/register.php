@@ -1,7 +1,7 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
+    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
 
     if(isset($_SESSION['user'])) {
         header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
@@ -9,13 +9,15 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($mode_registration) {
+        if ($config['register']) {
             if (isset($_POST['login'], $_POST['display-name'], $_POST['password'], $_POST['password-confirm'], $_POST['email'])) {
                 $login = trim($_POST['login']);
                 $display_name = trim($_POST['display-name']);
                 $password = $_POST['password'];
                 $password_confirm = $_POST['password-confirm'];
                 $email = trim($_POST['email']);
+
+                if(!$config['emailrecovery']) { $email = null; }
     
                 if ($login === "" || $display_name === "" || $password === "" || $password_confirm === "" || $email === "") {
                     $error_msg = "Error: All fields are required!";
@@ -86,7 +88,7 @@
 
             <div class="flex flex-col  items-center w-full">
                 <?php 
-                if($mode_registration == true) {
+                if($config['register']) {
                 ?>
 
                 <h1 class="font-bold text-center mt-5">Hey there! 👋</h1>
@@ -101,19 +103,24 @@
                             <label for="display-name" class="text-xl font-bold">Display name:</label>
                             <input type="text" name="display-name" placeholder="eg. Jajco" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
 
+                            <?php if($config['emailrecovery']) { ?>
                             <label for="email" class="text-xl font-bold">Email:</label>
                             <input type="email" name="email" placeholder="eq. dozy@mandarynki.eu" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
+                            <?php } ?>
         
                             <label for="password" class="text-xl font-bold">Password:</label>
                             <input type="password" name="password" placeholder="eg. *******" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
         
                             <label for="password-confirm" class="text-xl font-bold">Confirm password:</label>
                             <input type="password" name="password-confirm" placeholder="same as above *******" class="rounded-lg p-2 bg-slate-700 mb-2" required/>
+
+                            <p class="text-left mt-2">Already have an account? <a href="/panel/login.php">Login here</a></p>
                         </div>
 
                         <div class="flex flex-col items-center w-1/2">
-                            <img src="/img/astolfo.webp" class="w-[150px] h-[150px] rounded-xl"/>
-                            <p class="text-center mt-2">Already have an account? <a href="/panel/login.php">Login here</a></p>
+                            <img src="<?php echo $config['projecticon'] ?>" class="w-[150px] h-[150px] rounded-xl"/>
+                            <h2 class="text-center mt-2"><?php echo $config['projectname'] ?></h2>
+                            <p class="text-center mt-2"><?php echo $config['projectdescription'] ?></p>
                             <p class="text-center my-2 text-red-600"><?php echo $error_msg; ?></a></p>
                             <p class="text-center mt-auto">By creating an account, you agree to our <a href="#">terms of service</a> and <a href="#">privacy policy</a></p>
                         </div>

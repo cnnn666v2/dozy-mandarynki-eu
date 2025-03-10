@@ -12,13 +12,14 @@
     <hr class="border-b-black border-b-2 border-t-gray-600">
 
     <form method="POST" class="flex flex-row justify-center mt-2" action="/search.php">
-        <input type="text" name="text-search" placeholder="Search..." class="p-1 rounded-l-lg w-4/5 text-black" />
-        <button type="submit" name="submit" class="bg-blue-600 p-1 rounded-r-lg w-1/5 hover:bg-blue-500">Q</button>
+        <input type="text" name="text-search" placeholder="Search..." class="p-1 rounded-l-lg w-4/5 text-black" disabled/>
+        <button type="submit" name="submit" class="bg-blue-600 p-1 rounded-r-lg w-1/5 hover:bg-blue-500" disabled>Q</button>
     </form>
 
     <h2 class="text-center uppercase mt-3">Quick Access</h2>
     <ul class="flex flex-col gap-1">
         <li>- <a href="/panel/login.php">Login page</a></li>
+        <li>- <a href="/panel/index.php">User dashboard</a></li>
         <li>- <a href="https://mandarynki.eu/doku.php?id=en:users:dozy">Wiki page <span class="text-xs">(mandarynki.eu)</span></a></li>
     </ul>
 

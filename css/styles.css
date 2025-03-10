@@ -890,6 +890,11 @@ a:hover {
   width: max-content;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .min-w-\[15\%\] {
   min-width: 15%;
 }
@@ -1171,11 +1176,6 @@ a:hover {
 .bg-slate-950 {
   --tw-bg-opacity: 1;
   background-color: rgb(2 6 23 / var(--tw-bg-opacity, 1));
-}
-
-.bg-red-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
 }
 
 .p-1 {

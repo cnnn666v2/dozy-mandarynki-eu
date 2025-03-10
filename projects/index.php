@@ -1,6 +1,5 @@
 <?php
     session_start();
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
 ?>
 
 <!DOCTYPE html>

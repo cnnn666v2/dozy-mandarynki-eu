@@ -1,7 +1,7 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
+    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
 ?>
 
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
+    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
 
     if(isset($_SESSION['user'])) {
         header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
@@ -67,12 +67,13 @@
                             <label for="password" class="text-xl font-bold">Password:</label>
                             <input type="password" name="password" placeholder="eg. *******" class="rounded-lg p-2 bg-slate-700 mb-6" required/>
 
-                            <p class="text-left mb-1 text-base"><a href="/panel/register.php">Register</a> <?php if($service_emailrecovery) { echo '· <a href="#">Forgot password?</a>'; } ?></p>
+                            <p class="text-left mt-auto mb-1 text-base"><a href="/panel/register.php">Register</a> <?php if($config['emailrecovery']) { echo '· <a href="#">Forgot password?</a>'; } ?></p>
                         </div>
 
                         <div class="flex flex-col items-center w-1/2">
-                            <img src="/img/astolfo.webp" class="w-[150px] h-[150px] rounded-xl"/>
-                            <p class="text-center mt-2">Welcome back, user.</p>
+                            <img src="<?php echo $config['projecticon'] ?>" class="w-[150px] h-[150px] rounded-xl"/>
+                            <h2 class="text-center mt-2"><?php echo $config['projectname'] ?></h2>
+                            <p class="text-center mt-2"><?php echo $config['projectdescription'] ?></p>
                             <p class="text-center my-2 text-red-600"><?php echo $error_msg; ?></a></p>
                         </div>
                     </div>

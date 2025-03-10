@@ -1,10 +1,10 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php';
+    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
 
     if(!isset($_SESSION['user_id'])) {
-        header('Location: http://'.$_SERVER['HTTP_HOST']);
+        header('Location: /panel/login.php');
         exit();
     }
 ?>
