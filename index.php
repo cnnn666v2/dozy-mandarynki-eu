@@ -29,53 +29,55 @@
                 <p class="text-center">Bring a coffee, or a can of beer, because you'll be in for a <i>looooooong</i> time 😉</p>
 
                 <h1 class="text-center mt-10 uppercase">Latest blog news 📰</h1>
-                <section id="blog-latest" class="flex flex-col items-center justify-center mt-4 px-4">
-                    <div class="flex flex-row gap-5">
-                        <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
-                            <div class="flex flex-row">
-                                <div class="flex flex-col min-w-[170px] max-w-[170px] flex-wrap">
-                                    <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px; height: 150px;" />
-                                    <p class="my-2 text-gray-300 text-wrap"><b>Category:</b> <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">news</span></p>
-                                    <p class="text-gray-300 mb-2"><b>Tags:</b>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 1</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 2</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 3</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 4</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">more...</span>
-                                    </p>
-                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Published on: 28.01.2025</p>
-                                </div>
-                                <div class="ml-2">
-                                    <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the absolute latest blog</h2>
-                                    <p class="my-2 text-gray-300">And this is the description of the absolute latest blog</p>
-                                </div>
-                            </div>
-                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            <a href="#" class="absolute top-0 left-0 w-full h-full"></a>
-                        </article>
+                <section id="blog-latest" class="flex flex-col items-center justify-center mt-4 px-4 w-full">
+                    <div class="flex flex-row gap-5 w-full">
+                        <?php
+                        $stmt = $pdo->prepare("
+                            SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, 
+                                b.name AS category_name,
+                                COALESCE(GROUP_CONCAT(c.name SEPARATOR ', '), '') AS tags
+                            FROM {$dbprefix}blog AS a
+                            JOIN {$dbprefix}categories AS b ON a.category_id = b.id
+                            LEFT JOIN {$dbprefix}blog_tags AS bt ON a.id = bt.blog_id
+                            LEFT JOIN {$dbprefix}tags AS c ON bt.tag_id = c.id
+                            WHERE b.name != 'status'
+                            GROUP BY a.id
+                            ORDER BY a.created_at DESC
+                            LIMIT 2
+                        ");
+                        $stmt->execute();
+                        $blog_post = $stmt->fetchAll();
+                        ?>
 
-                        <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
-                            <div class="flex flex-row">
-                                <div class="flex flex-col min-w-[170px] max-w-[170px] flex-wrap">
-                                    <img src="/img/nightmare-foxy.gif" class="rounded-xl" style="width: 150px; height: 150px;" />
-                                    <p class="my-2 text-gray-300 text-wrap"><b>Category:</b> <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">news</span></p>
-                                    <p class="text-gray-300 mb-2"><b>Tags:</b>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 1</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 2</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 3</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">tag 4</span>
-                                        <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">more...</span>
-                                    </p>
-                                    <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Published on: 28.01.2025</p>
+                        <?php foreach($blog_post as $post):?>
+                            <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
+                                <div class="flex flex-row">
+                                    <div class="flex flex-col min-w-[170px] max-w-[170px] flex-wrap">
+                                        <img src="<?php echo htmlspecialchars($post['featured_image']) ?>" class="rounded-xl" style="width: 150px; height: 150px;" />
+                                        <p class="my-2 text-gray-300 text-wrap"><b>Category:</b> <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs"><?php echo $post['category_name'] ?></span></p>
+                                        <p class="text-gray-300 mb-2"><b>Tags:</b>
+                                        <?php $i = 0; $endTags = false;
+                                            $tagsString = trim($post['tags']);
+                                            $tags = array_map('trim',  explode(',', $tagsString));
+                                            foreach ($tags as $tag):
+                                        ?>
+                                        <?php if($i <= 5 && !$endTags) { ?>
+                                            <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block"><?php $i++; echo htmlspecialchars($tag) ?></span>
+                                        <?php } else if(!$endTags) { $endTags = true; ?>
+                                            <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block">more...</span>
+                                        <?php } endforeach;?>
+                                        </p>
+                                        <p class="mt-auto mb-2 text-sm text-gray-300 text-wrap">Published on: <?php echo htmlspecialchars($post['created_at']); ?></p>
+                                    </div>
+                                    <div class="ml-2">
+                                        <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200"><?php echo htmlspecialchars($post['title']); ?></h2>
+                                        <p class="my-2 text-gray-300"><?php echo htmlspecialchars(mb_substr($post['description'], 0, 200)) . '... <span class="text-blue-500">Continue reading</span>'; ?></p>
+                                    </div>
                                 </div>
-                                <div class="ml-2">
-                                    <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is the (almost) absolute latest blog</h2>
-                                    <p class="my-2 text-gray-300">And this is the (almost) description of the absolute latest blog</p>
-                                </div>
-                            </div>
-                            <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            <a href="#" class="absolute top-0 left-0 w-full h-full"></a>
-                        </article>
+                                <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
+                                <a href="#" class="absolute top-0 left-0 w-full h-full"></a>
+                            </article>
+                        <?php endforeach; ?>
                     </div>
 
                     <h3 class="my-3">...or maybe you wanna see <b><i>all</i></b> of my blog posts? <a href="#">Check them out here</a></h3>

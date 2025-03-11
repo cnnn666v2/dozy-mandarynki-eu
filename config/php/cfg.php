@@ -15,4 +15,4 @@ projecticon = "/img/main/icon.webp" ;filepath to the icon, can be any img file l
 
 [service]
 register = true
-emailrecovery = false ;best to leave as false, feature is not available and probably will never be
+emailrecovery = true ;best to leave as false, feature is not available and probably will never be

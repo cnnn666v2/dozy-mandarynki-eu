@@ -9,7 +9,9 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] === "POST") {
+        echo '1';
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
+            echo '2';
             $login = trim($_POST['login']);
             $pass = $_POST['password'];
     
@@ -20,11 +22,12 @@
             $user = $stmt->fetch();
     
             if ($user && password_verify($pass, $user['password'])) {
+                echo '3';
                 $_SESSION['user'] = $login;
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['display_name'];
                 header('Location: http://'.$_SERVER['HTTP_HOST'].'/panel/index.php');
-                exit;
+                exit();
             } else {
                 $error_msg = "Error: Invalid username or password!";
             }
