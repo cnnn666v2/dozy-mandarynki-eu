@@ -28,6 +28,14 @@
                 <h1 class="font-bold text-center mt-5">Welcome to my website, traveller! 👋</h1>
                 <p class="text-center">Bring a coffee, or a can of beer, because you'll be in for a <i>looooooong</i> time 😉</p>
 
+                <?php if(!empty($config['notice'])) { ?>
+                    <div class="flex flex-col rounded-md border-2 border-red-600 bg-red-800 w-1/2 p-2 m-5 gap-2">
+                        <h1 class="uppercase font-bold">Notice from the owner:</h1>
+                        <hr>
+                        <p><?= htmlspecialchars($config['notice']) ?></p>
+                    </div>
+                <?php } ?>
+
                 <h1 class="text-center mt-10 uppercase">Latest blog news 📰</h1>
                 <section id="blog-latest" class="flex flex-col items-center justify-center mt-4 px-4 w-full">
                     <div class="flex flex-row gap-5 w-full">
@@ -51,8 +59,8 @@
 
                         <?php foreach($blog_post as $post):?>
                             <article class="group flex flex-col p-2 border-2 rounded-lg border-red-600 flex-1 relative hover:bg-slate-800 hover:border-red-500 transition-colors ease-in-out duration-200">
-                                <div class="flex flex-row">
-                                    <div class="flex flex-col min-w-[170px] max-w-[170px] flex-wrap">
+                                <div class="flex flex-row h-full">
+                                    <div class="flex flex-col min-w-[170px] max-w-[170px] h-full flex-wrap">
                                         <img src="<?php echo htmlspecialchars($post['featured_image']) ?>" class="rounded-xl" style="width: 150px; height: 150px;" />
                                         <p class="my-2 text-gray-300 text-wrap"><b>Category:</b> <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs"><?php echo $post['category_name'] ?></span></p>
                                         <p class="text-gray-300 mb-2"><b>Tags:</b>

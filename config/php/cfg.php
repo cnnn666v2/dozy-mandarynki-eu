@@ -12,7 +12,8 @@
 projectname = "Project name"
 projectdescription = "This is a description of a project"
 projecticon = "/img/main/icon.webp" ;filepath to the icon, can be any img file like png, webp, jpg, etc.
+notice = "" ;leave string empty to turn off, if you type something it'll be displayed on the top of homepage
 
 [service]
 register = true
-emailrecovery = true ;best to leave as false, feature is not available and probably will never be
+emailrecovery = false ;best to leave as false, feature is not available and probably will never be

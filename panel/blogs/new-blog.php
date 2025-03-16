@@ -31,7 +31,23 @@
         }
     
         try {
-            $datePath = date("Y") . '/' . date("m") . '/' . date("d") . '/';
+            $slug = strtolower(trim($title));
+            $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+            $slug = trim($slug, '-');
+
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM {$dbprefix}blog WHERE slug = ?");
+            $original_slug = $slug;
+            $count = 1;
+
+            while (true) {
+                $stmt->execute([$slug]);
+                $exists = $stmt->fetchColumn();
+                if (!$exists) break;
+                $slug = $original_slug . '-' . $count;
+                $count++;
+            }
+
+            $datePath = date("Y") . '/' . date("m") . '/' . date("d") . '/img/';
             $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/'. $datePath; //Filepath for server upload
             $featured_image = null;
 
@@ -76,8 +92,8 @@
 
             $category_id = $category_row['id'];
 
-            $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, description, author_id, category_id, featured_image) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $content, $author_id, $category_id, $uploadPathC]);
+            $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, slug, description, author_id, category_id, featured_image) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $slug, $content, $author_id, $category_id, $uploadPathC]);
 
             $blog_id = $pdo->lastInsertId();
 

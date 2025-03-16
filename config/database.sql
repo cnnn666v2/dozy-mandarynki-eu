@@ -34,6 +34,7 @@ CREATE TABLE blogger-cnn_tags (
 CREATE TABLE blogger-cnn_blog (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     author_id INT NOT NULL,
     category_id INT NOT NULL,
