@@ -1011,6 +1011,10 @@ a:hover {
   justify-content: center;
 }
 
+.justify-items-start {
+  justify-items: start;
+}
+
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1039,12 +1043,28 @@ a:hover {
   gap: 1.5rem;
 }
 
+.place-self-start {
+  place-self: start;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
 .self-end {
   align-self: flex-end;
 }
 
 .self-center {
   align-self: center;
+}
+
+.justify-self-start {
+  justify-self: start;
+}
+
+.\!justify-self-start {
+  justify-self: start !important;
 }
 
 .overflow-hidden {
@@ -1450,6 +1470,10 @@ a:hover {
   font-style: italic;
 }
 
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
@@ -1610,6 +1634,11 @@ a:hover {
   background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-red-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:text-orange-100:hover {
   --tw-text-opacity: 1;
   color: rgb(255 237 213 / var(--tw-text-opacity, 1));
@@ -1671,6 +1700,18 @@ a:hover {
   }
 
   .md\:max-w-\[50vw\] {
+    max-width: 50vw;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:max-w-\[50vw\] {
+    max-width: 50vw;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:max-w-\[50vw\] {
     max-width: 50vw;
   }
 }
