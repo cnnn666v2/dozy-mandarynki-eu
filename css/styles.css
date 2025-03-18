@@ -752,6 +752,11 @@ a:hover {
   margin-bottom: auto;
 }
 
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .\!mt-auto {
   margin-top: auto !important;
 }
@@ -914,8 +919,16 @@ a:hover {
   width: max-content;
 }
 
-.w-\[50vw\] {
-  width: 50vw;
+.w-4 {
+  width: 1rem;
+}
+
+.w-\[60\%\] {
+  width: 60%;
+}
+
+.w-\[75\%\] {
+  width: 75%;
 }
 
 .min-w-\[15\%\] {
@@ -1032,11 +1045,6 @@ a:hover {
   text-wrap: wrap;
 }
 
-.break-normal {
-  overflow-wrap: normal;
-  word-break: normal;
-}
-
 .break-words {
   overflow-wrap: break-word;
 }
@@ -1055,6 +1063,10 @@ a:hover {
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 
 .rounded-b-md {
@@ -1247,10 +1259,6 @@ a:hover {
   background-color: rgb(2 6 23 / var(--tw-bg-opacity, 1));
 }
 
-.bg-opacity-65 {
-  --tw-bg-opacity: 0.65;
-}
-
 .bg-opacity-70 {
   --tw-bg-opacity: 0.7;
 }
@@ -1309,6 +1317,11 @@ a:hover {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .pb-3 {
@@ -1566,5 +1579,15 @@ a:hover {
 @media (min-width: 1280px) {
   .xl\:max-w-\[50vw\] {
     max-width: 50vw;
+  }
+
+  .xl\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .xl\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
