@@ -24,28 +24,68 @@
         <div id="container" class="flex flex-row relative">
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/sidebar.html'; ?>
 
+            <?php
+                $stmt = $pdo->prepare("
+                    SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, a.updated_at, 
+                        b.name AS category_name,
+                        COALESCE(GROUP_CONCAT(c.name SEPARATOR ', '), '') AS tags
+                    FROM {$dbprefix}blog AS a
+                    JOIN {$dbprefix}categories AS b ON a.category_id = b.id
+                    LEFT JOIN {$dbprefix}blog_tags AS bt ON a.id = bt.blog_id
+                    LEFT JOIN {$dbprefix}tags AS c ON bt.tag_id = c.id
+                    GROUP BY a.id
+                    ORDER BY a.created_at DESC
+                    LIMIT 1
+                ");
+                $stmt->execute();
+                $blog_post = "";
+                $blog_post = $stmt->fetchAll();
+                //var_dump($blog_post);
+
+                $id = htmlspecialchars($blog_post[0]['id']);
+                $title = htmlspecialchars($blog_post[0]['title']);
+                $content = htmlspecialchars($blog_post[0]['description']);
+                $aID = htmlspecialchars($blog_post[0]['author_id']);
+                $catID = htmlspecialchars($blog_post[0]['category_id']);
+                $fImage = htmlspecialchars($blog_post[0]['featured_image']);
+                $published = htmlspecialchars($blog_post[0]['created_at']);
+                $modified = htmlspecialchars($blog_post[0]['updated_at']);
+            ?>
+
             <div class="flex flex-col items-center w-full">
                 <div id="container-blog" class="flex flex-col items-center w-full">
-                    <div id="blog-banner" class="flex flex-row justify-center items-center w-full gap-3 bg-[url('/img/jajco.png')] py-10 relative border-b-2 border-gray-500">
-                        <span class="w-full h-full absolute bg-black bg-opacity-65 z-0"></span>
+                    <div id="blog-banner" class="flex flex-row justify-center items-center w-full gap-3 py-10 relative border-b-2 border-gray-500" style="background-image: url('<?= $fImage ?>');">
+                        <span class="w-full h-full absolute bg-black bg-opacity-70 z-0"></span>
                         <img src="/img/jajco.png" class="w-[50px] h-[50px] rounded-full z-10 place-self-start" />
-                        <div class="flex flex-col z-10">
-                            <h1 class="font-bold w-full">This is a very example title of a blog post which is very important</h1>
+                        <div class="flex flex-col z-10 w-[50vw]" >
+                            <h1 class="font-bold w-full text-wrap break-words"><?= $title ?></h1>
                             <div class="flex flex-col">
-                                <div class="flex flex-row">
-                                    <p>Author: Cnnn666</p>
-                                    <p class="ml-auto">Published on: 3/12/2025 | Edited on: 4/12/2025</p>
+                                <p>Author: <?= $aID ?></p>
+                                <p class="mb-1 text-gray-300 text-wrap"><b>Category:</b> <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs"><?= $blog_post[0]['category_name'] ?></span></p>
+                                <div class="flex flex-row gap-2">
+                                    <p class="text-gray-300 text-wrap"><b>Tags:</b>
+                                    <?php
+                                        $tagsString = trim($blog_post[0]['tags']);
+                                        $tags = array_map('trim',  explode(',', $tagsString));
+                                        foreach($tags as $tag):
+                                    ?>
+                                    <span class="uppercase bg-blue-700 rounded-lg p-1 font-semibold text-xs inline-block"><?= htmlspecialchars($tag) ?></span>
+                                    <?php endforeach ?>
+                                    </p>
                                 </div>
+                                <p class="text-sm mt-1">Published on: <?= $published ?><?php if($modified != $published) { echo htmlspecialchars(" | Edited at: " . $modified); } ?></p>
+                                <?php if($_SESSION['user_id'] == $blog_post[0]['author_id']) { ?>
                                 <div class="flex flex-row gap-3">
                                     <button type="button" class="rounded-lg px-4 border-2 mt-2 border-cyan-600 hover:bg-cyan-600 uppercase transition-colors ease-in-out duration-200 w-max">Edit blog</button>
                                     <button type="button" class="rounded-lg px-4 border-2 mt-2 border-red-600 hover:bg-red-600 uppercase transition-colors ease-in-out duration-200 w-max">Delete blog</button>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
 
                     <div id="blog-content" class="flex flex-col text-left max-w-[100vw] xl:max-w-[50vw] m-5">
-                        <p>where lets say a 6.45685584123 where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123where lets say a 6.45685584123</p>
+                       <p> <?= $content ?> </p>
                     </div>
 
                     <div id="blog-footer" class="flex flex-col bg-slate-900 justify-center items-center w-full gap-3 border-t-2 border-gray-500 py-2">
