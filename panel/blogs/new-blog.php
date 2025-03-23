@@ -266,6 +266,17 @@
                             <div class="flex flex-col border-2 border-cyan-500 rounded-md w-full">
                                 <div class="flex flex-row bg-slate-950 w-full gap-8 px-2 py-1 rounded-t-md">
                                     <div>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER1')">[h1]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER2')">[h2]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER3')">[h3]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER4')">[h4]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER5')">[h5]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER6')">[h6]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('PARAGRAPH')">[p]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('BREAKLINE')">[br]</button>
+                                    </div>
+
+                                    <div>
                                         <button type="button" class="blog-btn" onclick="insertElement('BOLD')">[b]</button>
                                         <button type="button" class="blog-btn" onclick="insertElement('ITALIC')">[i]</button>
                                         <button type="button" class="blog-btn" onclick="insertElement('UNDERLINE')">[u]</button>
@@ -274,18 +285,11 @@
 
                                     <div>
                                         <button type="button" class="blog-btn" onclick="insertElement('HYPERLINK')">[a]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('QUOTE')">[q]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('SPOILER')">[sp]</button>
                                         <button type="button" class="blog-btn" onclick="insertElement('IMAGE')">[img]</button>
-                                    </div>
-
-                                    <div>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER1')">[h1]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER2')">[h2]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER3')">[h3]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER4')">[h4]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER5')">[h5]</button>
-                                        <button type="button" class="blog-btn" onclick="insertElement('HEADER6')">[h6]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('QUOTE')">[q]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('BLOCKQUOTE')">[quote]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('CITE')">[cite]</button>
+                                        <button type="button" class="blog-btn" onclick="insertElement('SPOILER')">[spoiler]</button>
                                     </div>
                                 </div>
                                 <textarea name="content" class="bg-slate-700 p-2 min-h-60 w-full rounded-b-md" placeholder="[h1]So today I have adopted a cat![/h1]" id="typing-post"></textarea>

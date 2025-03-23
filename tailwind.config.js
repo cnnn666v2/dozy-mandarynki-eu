@@ -7,7 +7,7 @@ module.exports = {
     "projects/*/*.php",
     "panel/*.php",
     "panel/blogs/*.php",
-    "blogs/*.php"
+    "blog/*.php"
   ],
   theme: {
     extend: {},
