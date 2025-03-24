@@ -8,7 +8,7 @@
 
     if ($blog_slug) {
         $stmt = $pdo->prepare("
-            SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, a.updated_at, 
+            SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, a.updated_at, a.views, a.likes,
                 b.name AS category_name, u.display_name AS author_name,
                 COALESCE(GROUP_CONCAT(c.name SEPARATOR ', '), '') AS tags
             FROM {$dbprefix}blog AS a
@@ -23,7 +23,7 @@
         $stmt->bindParam(':slug', $blog_slug, PDO::PARAM_STR);
     } elseif ($blog_id) {
         $stmt = $pdo->prepare("
-            SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, a.updated_at, 
+            SELECT a.id, a.title, a.description, a.author_id, a.category_id, a.featured_image, a.created_at, a.updated_at, a.views, a.likes,
                 b.name AS category_name, u.display_name AS author_name,
                 COALESCE(GROUP_CONCAT(c.name SEPARATOR ', '), '') AS tags
             FROM {$dbprefix}blog AS a
@@ -55,6 +55,16 @@
     $fImage = htmlspecialchars($blog_post[0]['featured_image']);
     $published = htmlspecialchars($blog_post[0]['created_at']);
     $modified = htmlspecialchars($blog_post[0]['updated_at']);
+    $views = htmlspecialchars($blog_post[0]['views']);
+    $likes = htmlspecialchars($blog_post[0]['likes']);
+
+    if(!isset($_COOKIE["viewedPost_".$id])) {
+        $update_stmt = $pdo->prepare("UPDATE {$dbprefix}blog SET views = views + 1 WHERE id = :id");
+        $update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $update_stmt->execute();
+
+        setcookie("viewedPost_".$id, "true", time() + (86400 * 30), "/"); // Cookie will expire in 30 days
+    }
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +109,9 @@
                                         <?php endforeach ?>
                                         </p>
                                     </div>
+                                    <p>Views: <?= $views ?></p>
                                     <p class="text-sm mt-1">Published on: <?= $published ?><?php if($modified != $published) { echo htmlspecialchars(" | Edited at: " . $modified); } ?></p>
+                                    <button type="button" class="rounded-lg px-2 border-2 mt-2 border-blue-600 hover:bg-blue-600 uppercase transition-colors ease-in-out duration-200 w-max"><?= $likes ?> Likes</button>
                                     <?php if($_SESSION['user_id'] == $blog_post[0]['author_id']) { ?>
                                     <div class="flex flex-row gap-3">
                                         <button type="button" class="rounded-lg px-4 border-2 mt-2 border-cyan-600 hover:bg-cyan-600 uppercase transition-colors ease-in-out duration-200 w-max">Edit blog</button>
