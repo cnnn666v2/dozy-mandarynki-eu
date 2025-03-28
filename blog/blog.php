@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+error_reporting(E_ALL);
+
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
     $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
@@ -59,14 +63,58 @@
     $likes = htmlspecialchars($blog_post[0]['likes']);
 
     if(!isset($_COOKIE["viewedPost_".$id])) {
-        $update_stmt = $pdo->prepare("UPDATE {$dbprefix}blog SET views = views + 1 WHERE id = :id");
+        $update_stmt = $pdo->prepare("UPDATE {$dbprefix}blog SET views = views + 1, updated_at = updated_at WHERE id = :id");
         $update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $update_stmt->execute();
 
         setcookie("viewedPost_".$id, "true", time() + (86400 * 30), "/"); // Cookie will expire in 30 days
     }
-?>
 
+    $action = "null";
+    $blog_liked = isset($_GET['action_like']) ? $_GET['action_like'] : null;
+
+    if(isset($_COOKIE["likedPost_".$id])) {
+        $action = "unlike";
+        $liked_post = "bg-blue-600";
+
+        if($blog_liked == "unlike") {
+            $update_stmt = $pdo->prepare("UPDATE {$dbprefix}blog SET likes = likes - 1, updated_at = updated_at WHERE id = :id");
+            $update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_stmt->execute();
+
+            $liked_post = "bg-transparent";
+            unset($_COOKIE["likedPost_".$id]);        // Remove cookie
+            setcookie("likedPost_".$id, "", -1, "/"); // Remove cookie
+        }
+    } else {
+        $action = "true";
+        if($blog_liked == "true") {
+            $update_stmt = $pdo->prepare("UPDATE {$dbprefix}blog SET likes = likes + 1, updated_at = updated_at WHERE id = :id");
+            $update_stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $update_stmt->execute();
+
+            $liked_post = "bg-blue-600";
+            setcookie("likedPost_".$id, "true", time() + (86400 * 150), "/"); // Cookie will expire in 150 days
+        }
+    }
+
+    $stmt = $pdo->prepare("
+        SELECT title, created_at, featured_image, slug
+        FROM {$dbprefix}blog
+        WHERE author_id = :id AND id != :b_id
+        GROUP BY id DESC
+        LIMIT 3
+    ");
+    $stmt->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmt->bindParam(':b_id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $other_blogs = $stmt->fetchAll();
+
+    /*
+    unset($_COOKIE["likedPost_".$id]);
+    setcookie("likedPost_".$id, "", -1, "/");
+    */
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -109,9 +157,11 @@
                                         <?php endforeach ?>
                                         </p>
                                     </div>
-                                    <p>Views: <?= $views ?></p>
-                                    <p class="text-sm mt-1">Published on: <?= $published ?><?php if($modified != $published) { echo htmlspecialchars(" | Edited at: " . $modified); } ?></p>
-                                    <button type="button" class="rounded-lg px-2 border-2 mt-2 border-blue-600 hover:bg-blue-600 uppercase transition-colors ease-in-out duration-200 w-max"><?= $likes ?> Likes</button>
+                                    <div class="flex flex-row gap-2">
+                                        <p class="rounded-lg px-2 border-2 mt-2 border-green-700 bg-green-700 uppercase w-max">Views: <?= $views ?></p>
+                                        <?php echo '<button type="button" class="rounded-lg px-2 border-2 mt-2 border-blue-600 '. $liked_post .' hover:bg-blue-600 uppercase transition-colors ease-in-out duration-200 w-max"><a href="/blog/'.$blog_slug.'?action_like='.$action.'" style="width:100%;height:100%;padding:0;margin:0;color:white;">'.$likes.' Likes</a></button>' ?>
+                                    </div>
+                                    <p class="text-sm mt-2 rounded-lg px-2 border-2 border-slate-900 bg-slate-800 w-max">Published on: <?= $published ?><?php if($modified != $published) { echo htmlspecialchars(" | Edited at: " . $modified); } ?></p>
                                     <?php if($_SESSION['user_id'] == $blog_post[0]['author_id']) { ?>
                                     <div class="flex flex-row gap-3">
                                         <button type="button" class="rounded-lg px-4 border-2 mt-2 border-cyan-600 hover:bg-cyan-600 uppercase transition-colors ease-in-out duration-200 w-max">Edit blog</button>
@@ -128,40 +178,26 @@
                     </div>
 
                     <div id="blog-footer" class="flex flex-col bg-slate-900 justify-center items-center w-full gap-3 border-t-2 border-gray-500 py-2">
-                        <h2 class="uppercase font-bold"><span class="text-lg">More</span> <span class="text-cyan-500">blogs</span> <span class="text-lg">from</span> <span class="text-green-600">Cnnn666</span></h2>
+                        <h2 class="uppercase font-bold"><span class="text-lg">More</span> <span class="text-cyan-500">blogs</span> <span class="text-lg">from</span> <span class="text-green-600"><?= $author ?></span></h2>
                         <div class="flex flex-row gap-6">
+                            <?php
+                            if (!$other_blogs) {
+                                echo '<h3 class="uppercase my-auto">'.$author ." hasn't published any other blogs</h3>";
+                            } else {
+                                foreach($other_blogs as $blog2):
+                            ?>
                             <div class="group flex flex-col relative bg-black border-4 border-slate-600 rounded-lg overflow-hidden transition-all ease-in-out duration-200">
-                                <img src="/img/main/icon.webp" class="w-[300px] h-[150px] opacity-40 transition-all ease-in-out duration-200 group-hover:scale-150 group-hover:opacity-20" />
+                                <img src="<?= $blog2['featured_image'] ?>" class="w-[300px] h-[150px] opacity-40 transition-all ease-in-out duration-200 group-hover:scale-150 group-hover:opacity-20" />
                                 <div class="flex flex-col absolute w-full h-full p-2">
-                                    <h2 class="mt-auto truncate font-bold transition-all ease-in-out duration-300 group-hover:text-blue-500">
-                                        Title of a blog post XDdddd
-                                    </h2>
-                                    <h5>Published: 2/12/2025</h5>
+                                    <h2 class="mt-auto truncate font-bold transition-all ease-in-out duration-300 group-hover:text-blue-500"><?= $blog2['title'] ?></h2>
+                                    <h5><?= $blog2['created_at'] ?></h5>
                                 </div>
-                                <a href="#" class="absolute w-full h-full"></a>
+                                <a href="/blog/<?=$blog2['slug']?>" class="absolute w-full h-full"></a>
                             </div>
-
-                            <div class="group flex flex-col relative bg-black border-4 border-slate-600 rounded-lg overflow-hidden transition-all ease-in-out duration-200">
-                                <img src="/img/main/icon.webp" class="w-[300px] h-[150px] opacity-40 transition-all ease-in-out duration-200 group-hover:scale-150 group-hover:opacity-20" />
-                                <div class="flex flex-col absolute w-full h-full p-2">
-                                    <h2 class="mt-auto truncate font-bold transition-all ease-in-out duration-300 group-hover:text-blue-500">
-                                        Title of a blog post XDdddd
-                                    </h2>
-                                    <h5>Published: 2/12/2025</h5>
-                                </div>
-                                <a href="#" class="absolute w-full h-full"></a>
-                            </div>
-
-                            <div class="group flex flex-col relative bg-black border-4 border-slate-600 rounded-lg overflow-hidden transition-all ease-in-out duration-200">
-                                <img src="/img/main/icon.webp" class="w-[300px] h-[150px] opacity-40 transition-all ease-in-out duration-200 group-hover:scale-150 group-hover:opacity-20" />
-                                <div class="flex flex-col absolute w-full h-full p-2">
-                                    <h2 class="mt-auto truncate font-bold transition-all ease-in-out duration-300 group-hover:text-blue-500">
-                                        Title of a blog post XDdddd
-                                    </h2>
-                                    <h5>Published: 2/12/2025</h5>
-                                </div>
-                                <a href="#" class="absolute w-full h-full"></a>
-                            </div>
+                            <?php
+                                endforeach;
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
