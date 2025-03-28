@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', '0');
+/*ini_set('display_errors', '0');
 ini_set('display_startup_errors', '0');
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
@@ -55,6 +55,7 @@ error_reporting(E_ALL);
     $title = htmlspecialchars($blog_post[0]['title']);
     $content = htmlspecialchars($blog_post[0]['description']);
     $author = htmlspecialchars($blog_post[0]['author_name']);
+    $authorID = htmlspecialchars($blog_post[0]['author_id']);
     $catID = htmlspecialchars($blog_post[0]['category_id']);
     $fImage = htmlspecialchars($blog_post[0]['featured_image']);
     $published = htmlspecialchars($blog_post[0]['created_at']);
@@ -105,7 +106,7 @@ error_reporting(E_ALL);
         GROUP BY id DESC
         LIMIT 3
     ");
-    $stmt->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmt->bindParam(':id', $authorID, PDO::PARAM_INT);
     $stmt->bindParam(':b_id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $other_blogs = $stmt->fetchAll();
