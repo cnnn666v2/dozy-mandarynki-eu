@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="ml-2">
                                         <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200"><?php echo htmlspecialchars($post['title']); ?></h2>
-                                        <p class="my-2 text-gray-300"><?php echo htmlspecialchars(mb_substr($post['description'], 0, 500)) . '... <span class="text-blue-500">Continue reading</span>'; ?></p>
+                                        <p class="my-2 text-gray-300 bbcodeparser"><?php echo htmlspecialchars(mb_substr($post['description'], 0, 500)) . '... <span class="text-blue-500">Continue reading</span>'; ?></p>
                                     </div>
                                 </div>
                                 <button class="border-2 border-green-700 px-2 py-1 text-lg rounded-lg group-hover:bg-green-700 mt-auto w-full uppercase transition-colors ease-in-out duration-200">Read more</button>
