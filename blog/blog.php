@@ -175,7 +175,7 @@ error_reporting(E_ALL);*/
                     </div>
 
                     <div id="blog-content" class="flex flex-col text-left w-[75%] my-5 px-5 xl:px-0">
-                       <p> <?= $content ?> </p>
+                       <?= $content ?>
                     </div>
 
                     <div id="blog-footer" class="flex flex-col bg-slate-900 justify-center items-center w-full gap-3 border-t-2 border-gray-500 py-2">

@@ -158,5 +158,6 @@
         </div>
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
+        <script src="/js/blogs/bbcode-parser-home.js"></script>
     </body>
 </html>

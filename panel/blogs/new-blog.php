@@ -93,7 +93,7 @@
             $category_id = $category_row['id'];
 
             $stmt = $pdo->prepare("INSERT INTO {$dbprefix}blog (title, slug, description, author_id, category_id, featured_image) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $slug, $content, $author_id, $category_id, $uploadPathC]);
+            $stmt->execute([htmlspecialchars($title), $slug, htmlspecialchars($content), $author_id, $category_id, $uploadPathC]);
 
             $blog_id = $pdo->lastInsertId();
 
