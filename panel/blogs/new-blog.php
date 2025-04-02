@@ -67,7 +67,7 @@
                 $fileName = "FI_" . time() . "_" . basename($file['name']);
                 $targetFile = $uploadPath . $fileName;
                 $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-                $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
                 if (in_array($fileType, $allowedTypes)) {
                     if (move_uploaded_file($file['tmp_name'], $targetFile)) {
@@ -258,9 +258,10 @@
                                 </div>
                             </div>
 
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-1">
                                 <label for="file" class="text-xl font-bold">Featured image:</label>
-                                <input type="file" name="file" accept="image/*" required/>
+                                <input type="file" class="text-sm text-gray-400 mt-1 file:mr-2 file:p-2 file:rounded-lg file:border-2 file:border-solid file:border-cyan-600 file:uppercase file:bg-transparent file:text-white hover:file:bg-cyan-600 hover:file:cursor-pointer file:transition-colors file:ease-in-out file:duration-200" name="file" accept=".jpeg, .jpg, .png, .gif, .webp" required/>
+                                <p class="text-sm text-gray-400">Accepted file types: JPEG, JPG, PNG, GIF, WEBP</p>
                             </div>
 
                             <div class="flex flex-col border-2 border-cyan-500 rounded-md w-full">
