@@ -2,7 +2,7 @@
 ; Welcome to your cfg.php file!
 ; The job of this file is to provide config things for your website.
 ;
-; It's best if you make a copy of this file and work on the copy instead this,
+; It's best if you make a copy of this file and work on the copy instead,
 ; but keep in mind you'll have to change the name of the copy to cfg.php
 ;
 ; The variables are rather self explanatory, but if *I think* that something is not

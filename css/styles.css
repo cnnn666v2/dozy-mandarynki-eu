@@ -740,6 +740,10 @@ a:hover {
   z-index: 10;
 }
 
+.z-50 {
+  z-index: 50;
+}
+
 .m-4 {
   margin: 1rem;
 }
@@ -923,6 +927,14 @@ a:hover {
   width: 300px;
 }
 
+.w-\[40\%\] {
+  width: 40%;
+}
+
+.w-\[49\%\] {
+  width: 49%;
+}
+
 .w-\[50px\] {
   width: 50px;
 }
@@ -942,14 +954,6 @@ a:hover {
 .w-max {
   width: -moz-max-content;
   width: max-content;
-}
-
-.w-\[48\%\] {
-  width: 48%;
-}
-
-.w-\[49\%\] {
-  width: 49%;
 }
 
 .min-w-\[15\%\] {
@@ -1127,6 +1131,10 @@ a:hover {
   border-bottom-width: 4px;
 }
 
+.border-r-0 {
+  border-right-width: 0px;
+}
+
 .border-t-2 {
   border-top-width: 2px;
 }
@@ -1198,6 +1206,11 @@ a:hover {
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(202 138 4 / var(--tw-border-opacity, 1));
+}
+
+.border-slate-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(51 65 85 / var(--tw-border-opacity, 1));
 }
 
 .border-b-black {
