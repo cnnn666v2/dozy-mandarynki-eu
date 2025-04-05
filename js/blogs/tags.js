@@ -8,7 +8,6 @@ let addedTags = [];
 btnAdd.addEventListener("click", tagAdd);
 
 function tagDel(event) {
-  console.log("Jajco xd");
   event.target.remove();
   addedTags = addedTags.filter((item) => item !== selTag.value);
   tagList2.value = JSON.stringify(addedTags);
@@ -16,8 +15,7 @@ function tagDel(event) {
 
 function tagAdd() {
   if (document.contains(document.getElementById("tg-" + selTag.value))) {
-    errorTagMsg.textContent =
-      "Error: Tag " + selTag.value + " has been already added.";
+    errorTagMsg.textContent = "Error: Tag " + selTag.value + " has been already added.";
   } else {
     let element = document.createElement("p");
 

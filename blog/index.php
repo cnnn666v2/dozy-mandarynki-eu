@@ -1,7 +1,14 @@
 <?php
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
-    $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/php/cfg.php');
+
+    $stmt = $pdo->prepare("SELECT name, id FROM ${dbprefix}tags ORDER BY id DESC");
+    $stmt->execute();
+    $tags = $stmt->fetchAll();
+
+    $stmt = $pdo->prepare("SELECT name, id FROM ${dbprefix}categories ORDER BY id DESC");
+    $stmt->execute();
+    $categories = $stmt->fetchAll();
 
     $lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id mollis risus. Aliquam erat volutpat. Suspendisse at ullamcorper massa. Morbi tristique, justo sed ullamcorper efficitur, velit libero condimentum neque, ut gravida urna ante vitae quam. Vivamus viverra neque tincidunt, consectetur est nec, fermentum libero. Nam eget tempor nibh, vulputate sagittis justo. Pellentesque sodales nibh vel eros bibendum consequat dignissim sit amet diam. Phasellus sollicitudin ac felis non luctus. Duis id fermentum mauris, sed rutrum lectus.";
 ?>
@@ -32,47 +39,31 @@
                 <form class="flex flex-row gap-2 w-full justify-center mt-2 text-lg">
                     <div class="flex flex-col relative z-50">
                         <button type="button" onclick="toggleCategory()" class="border-2 border-solid border-cyan-600 uppercase rounded-lg px-2 hover:bg-cyan-600 transition-colors duration-200 ease-in-out h-full">Category</button>
-                        <div id="category-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96" >
+                        <div id="category-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96 shadow-xl shadow-black" >
                             <input type="text" placeholder="Search a category..." class="px-2 py-1 rounded-lg bg-slate-700 " />
-                            <p class="text-sm uppercase font-semibold">Selected: <span class="uppercase bg-green-700 rounded-lg p-1 text-xs">EXAMPLE CATEGORY</span></p>
+                            <p class="text-sm uppercase font-semibold">Selected: <button type="button" class="uppercase bg-green-700 rounded-lg p-1 text-xs hover:bg-green-800 hover:text-red-500 transition-colors duration-200 ease-in-out">No category selected</button></p>
                             <hr class="rounded-xl border-2">
                             <div class="flex flex-row flex-wrap gap-2 max-h-32 pr-2 overflow-y-scroll">
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">XDDD VERY LONG CATEGORY NAME WHAT THE FUCK</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">XDDD VERY LONG CATEGORY NAME WHAT THE FUCK</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">CATEGORY</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
+                                <?php foreach($categories as $cat): ?>
+                                <button type="button" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($cat['name']) ?></button>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-col relative z-50">
                         <button type="button" onclick="toggleTags()" class="border-2 border-solid border-cyan-600 uppercase rounded-lg px-2 hover:bg-cyan-600 transition-colors duration-200 ease-in-out h-full">Tags</button>
-                        <div id="tags-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96" >
+                        <div id="tags-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96 shadow-xl shadow-black" >
                             <input type="text" placeholder="Search a tag..." class="px-2 py-1 rounded-lg bg-slate-700 " />
                             <p class="text-sm uppercase font-semibold">Selected:</p>
                             <div id="tag-table" class="flex flex-row gap-2 rounded-lg bg-slate-700 p-2 uppercase flex-wrap text-sm font-semibold max-h-24 overflow-y-scroll">
-                                <p class="uppercase bg-green-700 rounded-lg p-1 text-xs">EXAMPLE TAG</p>
+                                <button type="button" class="uppercase bg-green-700 rounded-lg p-1 text-xs hover:bg-green-800 hover:text-red-500 transition-colors duration-200 ease-in-out">Selected tag</button>
                             </div>
                             <hr class="rounded-xl border-2">
                             <div class="flex flex-row flex-wrap gap-2 max-h-32 pr-2 overflow-y-scroll">
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">XDDD VERY LONG TAG NAME WHAT THE FUCK</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">XDDD VERY LONG TAG NAME WHAT THE FUCK</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">TAG</span>
-                                <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">JAJCO</span>
+                                <?php foreach($tags as $tag): ?>
+                                <button type="button" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($tag['name']) ?></button>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -81,7 +72,11 @@
                         <input type="text" name="query" placeholder="I wanna find..." class="px-2 py-1 rounded-l-lg w-full bg-slate-700 border-2 border-solid border-slate-500 border-r-0"/>
                         <button type="submit" class="border-2 border-solid border-green-600 rounded-r-lg px-2 uppercase hover:bg-green-600 transition-colors duration-200 ease-in-out">Search</button>
                     </div>
+
+                    <input type="hidden" name="selected-category" value="" />
+                    <input type="hidden" name="selected-tags" value="" />
                 </form>
+
                 <div class="flex flex-row justify-between flex-wrap w-full p-4 gap-4">
                     <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
                         <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
@@ -159,6 +154,6 @@
         </div>
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
-        <script src="/js/blogs/search.js" defer></script>
+        <script src="/js/blogs/filters.js" defer></script>
     </body>
 </html>
