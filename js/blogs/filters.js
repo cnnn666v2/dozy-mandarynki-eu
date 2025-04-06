@@ -4,6 +4,11 @@ let panelTags = document.getElementById("tags-dropdown");
 let statusCat = false; // true - displayed, false - hidden
 let statusTag = false; // true - displayed, false - hidden
 
+let catBtn = document.getElementById("btn-selected-category");
+let catList = document.getElementById("category-list");
+let catSearch = document.getElementById("search-category");
+let selCat;
+
 function toggleCategory() {
     if(!panelCategory.classList.contains("hidden")) {
         panelCategory.classList.add("hidden");
@@ -26,4 +31,14 @@ function toggleTags() {
     }
 
     if(statusCat) { panelCategory.classList.add("hidden"); }
+}
+
+function selectCategory(name, value) {
+    catBtn.textContent = name;
+    selCat = value;
+}
+
+function removeCategory() {
+    catBtn.textContent = "No category selected";
+    selCat = "";
 }

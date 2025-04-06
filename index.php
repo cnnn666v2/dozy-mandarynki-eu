@@ -88,7 +88,7 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <h3 class="my-3">...or maybe you wanna see <b><i>all</i></b> of my blog posts? <a href="#">Check them out here</a></h3>
+                    <h3 class="my-3">...or maybe you wanna see <b><i>all</i></b> of my blog posts? <a href="/blog/">Check them out here</a></h3>
                 </section>
                 <hr class="border-2 border-gray-500 w-full">
 

@@ -112,7 +112,7 @@
                 }
             }
     
-            header("Location: /panel/index.php"); // Change location to newly created blog
+            header("Location: /blog/blog.php?slug=${slug}"); // Change location to newly created blog
             exit();
         } catch (PDOException $e) {
             die("Database error: " . $e->getMessage());
