@@ -4,10 +4,10 @@ let panelTags = document.getElementById("tags-dropdown");
 let statusCat = false; // true - displayed, false - hidden
 let statusTag = false; // true - displayed, false - hidden
 
+let selCat = document.getElementsByName("selected-category");
 let catBtn = document.getElementById("btn-selected-category");
 let catList = document.getElementById("category-list");
 let catSearch = document.getElementById("search-category");
-let selCat;
 
 function toggleCategory() {
     if(!panelCategory.classList.contains("hidden")) {
@@ -35,10 +35,24 @@ function toggleTags() {
 
 function selectCategory(name, value) {
     catBtn.textContent = name;
-    selCat = value;
+    selCat.value = value;
 }
 
 function removeCategory() {
     catBtn.textContent = "No category selected";
-    selCat = "";
+    selCat.value = "";
 }
+
+catSearch.addEventListener("input", function () {
+  const filterValue = this.value.toLowerCase();
+  const buttons = document.querySelectorAll("#category-list button");
+
+  buttons.forEach(button => {
+    const name = button.getAttribute("name").toLowerCase();
+    if (name.includes(filterValue)) {
+      button.style.display = "inline-block";
+    } else {
+      button.style.display = "none";
+    }
+  });
+});

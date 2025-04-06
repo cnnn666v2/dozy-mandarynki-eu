@@ -27,7 +27,7 @@
 
     <body>
         <header class="flex flex-col w-full">
-            <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/navbar.html'; ?>
+            <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/navbar.php'; ?>
         </header>
 
         <div id="container" class="flex flex-row relative">
@@ -40,12 +40,12 @@
                     <div class="flex flex-col relative z-50">
                         <button type="button" onclick="toggleCategory()" class="border-2 border-solid border-cyan-600 uppercase rounded-lg px-2 hover:bg-cyan-600 transition-colors duration-200 ease-in-out h-full">Category</button>
                         <div id="category-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96 shadow-xl shadow-black" >
-                            <input type="text" name="search-category" placeholder="Search a category..." class="px-2 py-1 rounded-lg bg-slate-700 " />
+                            <input type="text" id="search-category" placeholder="Search a category..." class="px-2 py-1 rounded-lg bg-slate-700 " />
                             <p class="text-sm uppercase font-semibold">Selected: <button id="btn-selected-category" type="button" onclick="removeCategory()" class="uppercase bg-green-700 rounded-lg p-1 text-xs hover:bg-green-800 hover:text-red-500 transition-colors duration-200 ease-in-out">No category selected</button></p>
                             <hr class="rounded-xl border-2">
                             <div id="category-list" class="flex flex-row flex-wrap gap-2 max-h-32 pr-2 overflow-y-scroll">
                                 <?php foreach($categories as $cat): ?>
-                                <button type="button" onclick="selectCategory('<?=htmlspecialchars($cat['name'])?>', '<?=htmlspecialchars($cat['id'])?>')" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($cat['name']) ?></button>
+                                <button type="button" name="<?= htmlspecialchars($cat['name']) ?>" onclick="selectCategory('<?=htmlspecialchars($cat['name'])?>', '<?=htmlspecialchars($cat['id'])?>')" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($cat['name']) ?></button>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.php'; ?>
         <script src="/js/blogs/filters.js" defer></script>
     </body>
 </html>

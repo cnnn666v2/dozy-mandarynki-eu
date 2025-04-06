@@ -41,7 +41,8 @@
     <script src="/js/footer.js"></script>
 </footer>
 
-<!-- $end_time = microtime(true);
-        $render_time = $end_time - $start_time;
-        printf('<p>Page rendered in %.3f seconds</p>', $render_time);
-        -->
+<?php
+$end_time = microtime(true);
+$render_time = $end_time - $start_time;
+printf('<p class="text-xs">Page rendered in %.3f seconds. | Start: '.$start_time.' | End: '.$end_time.'</p>', $render_time);
+?>

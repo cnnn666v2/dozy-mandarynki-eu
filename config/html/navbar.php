@@ -1,4 +1,4 @@
-<!-- <?php $start_time = microtime(true); ?> -->
+<?php $start_time = microtime(true); ?>
 <nav id="nav-top" class="border-b-4 border-gray-500">
   <ul class="m-4 flex flex-row gap-5 text-2xl font-bold uppercase">
     <li>

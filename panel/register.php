@@ -80,7 +80,7 @@
 
     <body>
         <header class="flex flex-col w-full">
-            <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/navbar.html'; ?>
+            <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/navbar.php'; ?>
         </header>
 
         <div id="container" class="flex flex-row relative">
@@ -145,6 +145,6 @@
             </div>
         </div>
 
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.html'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.php'; ?>
     </body>
 </html>
