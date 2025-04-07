@@ -54,15 +54,17 @@
                     <div class="flex flex-col relative z-50">
                         <button type="button" onclick="toggleTags()" class="border-2 border-solid border-cyan-600 uppercase rounded-lg px-2 hover:bg-cyan-600 transition-colors duration-200 ease-in-out h-full">Tags</button>
                         <div id="tags-dropdown" class="absolute hidden flex flex-col bg-slate-900 border-2 border-solid border-slate-600 mt-10 p-2 rounded-lg gap-2 w-96 shadow-xl shadow-black" >
-                            <input type="text" placeholder="Search a tag..." class="px-2 py-1 rounded-lg bg-slate-700 " />
+                            <input type="text" id="search-tags" placeholder="Search a tag..." class="px-2 py-1 rounded-lg bg-slate-700 " />
                             <p class="text-sm uppercase font-semibold">Selected:</p>
                             <div id="tag-table" class="flex flex-row gap-2 rounded-lg bg-slate-700 p-2 uppercase flex-wrap text-sm font-semibold max-h-24 overflow-y-scroll">
-                                <button type="button" class="uppercase bg-green-700 rounded-lg p-1 text-xs hover:bg-green-800 hover:text-red-500 transition-colors duration-200 ease-in-out">Selected tag</button>
+                                <?php foreach($tags as $tag): ?>
+                                <button type="button" onclick="delTag(this, '<?= htmlspecialchars($tag['name']) ?>')" name="<?= htmlspecialchars($tag['name']) ?>" class="hidden uppercase bg-green-700 rounded-lg p-1 text-xs hover:bg-green-800 hover:text-red-500 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($tag['name']) ?></button>
+                                <?php endforeach; ?>
                             </div>
                             <hr class="rounded-xl border-2">
-                            <div class="flex flex-row flex-wrap gap-2 max-h-32 pr-2 overflow-y-scroll">
+                            <div id="tags-list" class="flex flex-row flex-wrap gap-2 max-h-32 pr-2 overflow-y-scroll">
                                 <?php foreach($tags as $tag): ?>
-                                <button type="button" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($tag['name']) ?></button>
+                                <button type="button" onclick="addTag(this, '<?= htmlspecialchars($tag['name']) ?>')" name="<?= htmlspecialchars($tag['name']) ?>" class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs hover:bg-green-400 hover:text-cyan-700 transition-colors duration-200 ease-in-out"><?= htmlspecialchars($tag['name']) ?></button>
                                 <?php endforeach; ?>
                             </div>
                         </div>
