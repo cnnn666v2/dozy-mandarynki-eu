@@ -10,6 +10,10 @@
     $stmt->execute();
     $categories = $stmt->fetchAll();
 
+    $stmt = $pdo->prepare("SELECT title, id, slug, description, featured_image, created_at FROM ${dbprefix}blog ORDER BY id DESC LIMIT 10");
+    $stmt->execute();
+    $blogs = $stmt->fetchAll();
+
     $lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id mollis risus. Aliquam erat volutpat. Suspendisse at ullamcorper massa. Morbi tristique, justo sed ullamcorper efficitur, velit libero condimentum neque, ut gravida urna ante vitae quam. Vivamus viverra neque tincidunt, consectetur est nec, fermentum libero. Nam eget tempor nibh, vulputate sagittis justo. Pellentesque sodales nibh vel eros bibendum consequat dignissim sit amet diam. Phasellus sollicitudin ac felis non luctus. Duis id fermentum mauris, sed rutrum lectus.";
 ?>
 
@@ -80,75 +84,22 @@
                 </form>
 
                 <div class="flex flex-row justify-between flex-wrap w-full p-4 gap-4">
+                    <?php foreach($blogs as $blog):?>
                     <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
-                        <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
+                        <img src="<?= htmlspecialchars($blog['featured_image']) ?>" class="w-[150px] h-[150px] rounded-lg" />
                         <div class="flex flex-col w-full">
-                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is a blog</h2>
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span></h5>
-                            <p class="my-2"><?php echo htmlspecialchars(mb_substr($lorem_ipsum, 0, 190)) . '...'; ?></p>
+                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200"><?= htmlspecialchars($blog['title']) ?></h2>
+                            <!-- TO DO: MODIFY MYSQL QUERY TO PRINT OUT CATEGORY NAME -->
+                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs"><?= htmlspecialchars($blog['category_name']) ?></span></h5>
+                            <p class="my-2 bbcodeparser"><?php echo htmlspecialchars(mb_substr($blog['description'], 0, 190)) . '...'; ?></p>
                             <div class="flex flex-row w-full mt-auto items-center">
-                                <h6 class="text-gray-400">Published on: 2.05.2025</h6>
+                                <h6 class="text-gray-400">Published on: <?= htmlspecialchars($blog['created_at']) ?></h6>
                                 <button class="border-2 border-green-700 ml-auto px-2 py-1 text-sm rounded-lg group-hover:bg-green-700 mt-auto uppercase transition-colors ease-in-out duration-200">Read more</button>
                             </div>
                         </div>
-                        <a href="#" class="absolute w-full h-full"></a>
+                        <a href="/blog/<?= $blog['slug'] ?>" class="absolute w-full h-full"></a>
                     </div>
-
-                    <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
-                        <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
-                        <div class="flex flex-col w-full">
-                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is a blog</h2>
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span></h5>
-                            <p class="my-2"><?php echo htmlspecialchars(mb_substr($lorem_ipsum, 0, 190)) . '...'; ?></p>
-                            <div class="flex flex-row w-full mt-auto items-center">
-                                <h6 class="text-gray-400">Published on: 2.05.2025</h6>
-                                <button class="border-2 border-green-700 ml-auto px-2 py-1 text-sm rounded-lg group-hover:bg-green-700 mt-auto uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute w-full h-full"></a>
-                    </div>
-
-                    <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
-                        <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
-                        <div class="flex flex-col w-full">
-                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is a blog</h2>
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span></h5>
-                            <p class="my-2"><?php echo htmlspecialchars(mb_substr($lorem_ipsum, 0, 190)) . '...'; ?></p>
-                            <div class="flex flex-row w-full mt-auto items-center">
-                                <h6 class="text-gray-400">Published on: 2.05.2025</h6>
-                                <button class="border-2 border-green-700 ml-auto px-2 py-1 text-sm rounded-lg group-hover:bg-green-700 mt-auto uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute w-full h-full"></a>
-                    </div>
-
-                    <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
-                        <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
-                        <div class="flex flex-col w-full">
-                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is a blog</h2>
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span></h5>
-                            <p class="my-2"><?php echo htmlspecialchars(mb_substr($lorem_ipsum, 0, 190)) . '...'; ?></p>
-                            <div class="flex flex-row w-full mt-auto items-center">
-                                <h6 class="text-gray-400">Published on: 2.05.2025</h6>
-                                <button class="border-2 border-green-700 ml-auto px-2 py-1 text-sm rounded-lg group-hover:bg-green-700 mt-auto uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute w-full h-full"></a>
-                    </div>
-
-                    <div class="flex flex-row p-2 w-[49%] hover:bg-slate-800 border-2 border-solid border-red-600 rounded-md gap-2 group relative transition-colors ease-in-out duration-200">
-                        <img src="/img/jajco.png" class="w-[150px] h-[150px] rounded-lg" />
-                        <div class="flex flex-col w-full">
-                            <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200">This is a blog</h2>
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">EXAMPLE CATEGORY</span></h5>
-                            <p class="my-2"><?php echo htmlspecialchars(mb_substr($lorem_ipsum, 0, 190)) . '...'; ?></p>
-                            <div class="flex flex-row w-full mt-auto items-center">
-                                <h6 class="text-gray-400">Published on: 2.05.2025</h6>
-                                <button class="border-2 border-green-700 ml-auto px-2 py-1 text-sm rounded-lg group-hover:bg-green-700 mt-auto uppercase transition-colors ease-in-out duration-200">Read more</button>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute w-full h-full"></a>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
                 <hr class="border-2 border-gray-500 w-full mt-8">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/content-end.html'; ?>
@@ -157,5 +108,6 @@
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/footer.php'; ?>
         <script src="/js/blogs/filters.js" defer></script>
+        <script src="/js/blogs/bbcode-parser-home.js" defer></script>
     </body>
 </html>
