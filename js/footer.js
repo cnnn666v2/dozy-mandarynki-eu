@@ -1,4 +1,4 @@
-const version = "1.4.1";
+const version = "1.5.0";
 const branch = "b"; //b - beta, s - stable
 
 document.getElementById("version-txt").textContent =

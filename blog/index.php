@@ -1,4 +1,7 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On');
+
     session_start();
     require $_SERVER['DOCUMENT_ROOT'] . '/config/php/db.php';
 
@@ -10,9 +13,27 @@
     $stmt->execute();
     $categories = $stmt->fetchAll();
 
-    $stmt = $pdo->prepare("SELECT title, id, slug, description, featured_image, created_at FROM ${dbprefix}blog ORDER BY id DESC LIMIT 10");
+    $limit = 10;
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page = max($page, 1);
+    $offset = ($page - 1) * $limit;
+
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM {$dbprefix}blog");
+    $stmt->execute();
+    $totalBlogs = (int)$stmt->fetchColumn();
+    $totalPages = (int)ceil($totalBlogs / $limit);
+
+    $stmt = $pdo->prepare("
+        SELECT title, id, slug, description, featured_image, created_at
+        FROM {$dbprefix}blog
+        ORDER BY id DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $blogs = $stmt->fetchAll();
+
 
     $lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id mollis risus. Aliquam erat volutpat. Suspendisse at ullamcorper massa. Morbi tristique, justo sed ullamcorper efficitur, velit libero condimentum neque, ut gravida urna ante vitae quam. Vivamus viverra neque tincidunt, consectetur est nec, fermentum libero. Nam eget tempor nibh, vulputate sagittis justo. Pellentesque sodales nibh vel eros bibendum consequat dignissim sit amet diam. Phasellus sollicitudin ac felis non luctus. Duis id fermentum mauris, sed rutrum lectus.";
 ?>
@@ -37,9 +58,29 @@
         <div id="container" class="flex flex-row relative">
             <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/sidebar.html'; ?>
 
-            <div class="flex flex-col justify-center items-center w-full">
+            <div class="flex flex-col items-center w-full">
                 <h1 class="font-bold text-center mt-5">BLOGS</h1>
-                <p class="flex gap-2">Page: <a href="#"><-</a> • <a href="#">1</a> • <a href="#">2</a> • <a href="#">3</a> • <a href="#">4</a> • <a href="#">5</a> • <a href="#">6</a> • <a href="#">7</a> • <a href="#">8</a> • <a href="#">9</a> • <a href="#">10</a> ... <a href="#">20</a> • <a href="#">-></a> | <button class="text-base text-gray-400 hover:text-gray-300">go to [x]</button></p>
+                <p class="flex gap-2">Page:
+                    <?php if ($page > 1): ?>
+                        <a style="font-size:2rem" href="/blog?page=<?= $page - 1 ?>">&laquo;</a>
+                    <?php endif; ?>
+
+                    <?php
+                        for($i = 1; $i<=$totalPages;$i++):
+                        if($i == $page): ?>
+                                <a style="color:green;" href="/blog?page=<?=$i?>"><?= $i ?></a>
+                    <?php   else: ?>
+                                <a href="/blog?page=<?=$i?>"><?= $i ?></a>
+                    <?php   endif;
+                        if($i<$totalPages) echo " • ";
+                        endfor; 
+                    ?>
+                    <?php if ($page < $totalPages): ?>
+                        <a style="font-size:2rem" href="/blog?page=<?= $page + 1 ?>">&raquo;</a>
+                    <?php endif; ?>
+                    | <button class="text-base text-gray-400 hover:text-gray-300">go to [x]</button>
+                </p>
+
                 <form class="flex flex-row gap-2 w-full justify-center mt-2 text-lg">
                     <div class="flex flex-col relative z-50">
                         <button type="button" onclick="toggleCategory()" class="border-2 border-solid border-cyan-600 uppercase rounded-lg px-2 hover:bg-cyan-600 transition-colors duration-200 ease-in-out h-full">Category</button>
@@ -90,7 +131,7 @@
                         <div class="flex flex-col w-full">
                             <h2 class="uppercase group-hover:text-blue-500 transition-colors ease-in-out duration-200"><?= htmlspecialchars($blog['title']) ?></h2>
                             <!-- TO DO: MODIFY MYSQL QUERY TO PRINT OUT CATEGORY NAME -->
-                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs"><?= htmlspecialchars($blog['category_name']) ?></span></h5>
+                            <h5>Category: <span class="uppercase bg-green-700 rounded-lg p-1 font-semibold text-xs">to do<!--<?= htmlspecialchars($blog['category_name']) ?>--></span></h5>
                             <p class="my-2 bbcodeparser"><?php echo htmlspecialchars(mb_substr($blog['description'], 0, 190)) . '...'; ?></p>
                             <div class="flex flex-row w-full mt-auto items-center">
                                 <h6 class="text-gray-400">Published on: <?= htmlspecialchars($blog['created_at']) ?></h6>
@@ -101,6 +142,28 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
+
+                <p class="flex gap-2">Page:
+                    <?php if ($page > 1): ?>
+                        <a style="font-size:2rem" href="/blog?page=<?= $page - 1 ?>">&laquo;</a>
+                    <?php endif; ?>
+
+                    <?php
+                        for($i = 1; $i<=$totalPages;$i++):
+                        if($i == $page): ?>
+                                <a style="color:green;" href="/blog?page=<?=$i?>"><?= $i ?></a>
+                    <?php   else: ?>
+                                <a href="/blog?page=<?=$i?>"><?= $i ?></a>
+                    <?php   endif;
+                        if($i<$totalPages) echo " • ";
+                        endfor; 
+                    ?>
+                    <?php if ($page < $totalPages): ?>
+                        <a style="font-size:2rem" href="/blog?page=<?= $page + 1 ?>">&raquo;</a>
+                    <?php endif; ?>
+                    | <button class="text-base text-gray-400 hover:text-gray-300">go to [x]</button>
+                </p>
+                
                 <hr class="border-2 border-gray-500 w-full mt-8">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . '/config/html/content-end.html'; ?>
             </div>
